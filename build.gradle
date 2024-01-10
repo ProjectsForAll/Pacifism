@@ -1,0 +1,40 @@
+plugins {
+    id 'java'
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
+}
+
+group = 'host.plas'
+version = '1.0.0'
+
+repositories {
+    mavenCentral()
+    maven {
+        name = "spigotmc-repo"
+        url = "https://hub.spigotmc.org/nexus/content/repositories/snapshots/"
+    }
+    maven {
+        name = "sonatype"
+        url = "https://oss.sonatype.org/content/groups/public/"
+    }
+    maven {
+        name = "jitpack"
+        url = "https://jitpack.io"
+    }
+}
+
+dependencies {
+    compileOnly "org.spigotmc:spigot-api:1.20.4-R0.1-SNAPSHOT"
+
+    annotationProcessor(shadow(implementation("com.github.Streamline-Essentials:BukkitOfUtils:master-SNAPSHOT")))
+}
+
+shadowJar {
+    buildDir = "target/"
+    archiveFileName = "${project.name}-${project.version}.jar"
+
+    minimize()
+}
+
+artifacts {
+    archives shadowJar
+}

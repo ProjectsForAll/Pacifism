@@ -1,0 +1,17 @@
+name: TogglePVP
+version: '${version}'
+main: host.plas.tpvp.TogglePVP
+
+commands:
+  togglepvp:
+    description: Toggle PVP
+    aliases:
+      - tpvp
+      - pvp
+    permission: togglepvp.command.togglepvp
+  setpvp:
+    description: Set PVP
+    aliases:
+      - spvp
+      - pvpset
+    permission: togglepvp.command.setpvp
