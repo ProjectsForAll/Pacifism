@@ -1,6 +1,6 @@
-name: TogglePVP
+name: '${name}'
 version: '${version}'
-main: host.plas.tpvp.TogglePVP
+main: '${main}'
 
 commands:
   togglepvp:

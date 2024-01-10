@@ -1,6 +1,6 @@
-package host.plas.tpvp.players;
+package host.plas.pacifism.players;
 
-import host.plas.tpvp.TogglePVP;
+import host.plas.pacifism.Pacifism;
 import io.streamlined.bukkit.commands.Sender;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,7 +8,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import tv.quaint.savables.SavableResource;
 import tv.quaint.storage.documents.SimpleJsonDocument;
-import tv.quaint.storage.resources.StorageResource;
 
 import java.io.File;
 import java.util.Optional;
@@ -24,7 +23,7 @@ public class PVPPlayer extends SavableResource {
         }
 
         public static File getPlayerFolder() {
-            File mainFolder = TogglePVP.getInstance().getDataFolder();
+            File mainFolder = Pacifism.getInstance().getDataFolder();
             File playerFolder = new File(mainFolder, "players");
 
             if (!playerFolder.exists()) {
@@ -106,12 +105,12 @@ public class PVPPlayer extends SavableResource {
         playTicks ++;
 
         if (! toggledByForce && ! hasToggled) {
-            boolean enabled = TogglePVP.getMainConfig().getPlayerForceToggleEnabled();
+            boolean enabled = Pacifism.getMainConfig().getPlayerForceToggleEnabled();
             if (enabled) {
-                boolean setAs = TogglePVP.getMainConfig().getPlayerForceToggleSetAs();
-                int ticks = TogglePVP.getMainConfig().getPlayerForceToggleTicks();
-                String message = TogglePVP.getMainConfig().getPlayerForceToggleMessage();
-                boolean sendMessage = TogglePVP.getMainConfig().getPlayerForceToggleSendMessage();
+                boolean setAs = Pacifism.getMainConfig().getPlayerForceToggleSetAs();
+                int ticks = Pacifism.getMainConfig().getPlayerForceToggleTicks();
+                String message = Pacifism.getMainConfig().getPlayerForceToggleMessage();
+                boolean sendMessage = Pacifism.getMainConfig().getPlayerForceToggleSendMessage();
 
                 if (playTicks >= ticks) {
                     if (pvpEnabled == setAs) {

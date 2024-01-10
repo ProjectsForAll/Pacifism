@@ -1,20 +1,20 @@
-package host.plas.tpvp;
+package host.plas.pacifism;
 
-import host.plas.tpvp.commands.SetCMD;
-import host.plas.tpvp.commands.ToggleCMD;
-import host.plas.tpvp.config.MainConfig;
-import host.plas.tpvp.events.MainListener;
-import host.plas.tpvp.players.PVPPlayer;
-import host.plas.tpvp.runnables.Ticker;
+import host.plas.pacifism.commands.SetCMD;
+import host.plas.pacifism.commands.ToggleCMD;
+import host.plas.pacifism.config.MainConfig;
+import host.plas.pacifism.events.MainListener;
+import host.plas.pacifism.players.PVPPlayer;
+import host.plas.pacifism.runnables.Ticker;
 import io.streamlined.bukkit.PluginBase;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
 
 @Getter @Setter
-public final class TogglePVP extends PluginBase {
+public final class Pacifism extends PluginBase {
     @Getter @Setter
-    private static TogglePVP instance;
+    private static Pacifism instance;
 
     @Getter @Setter
     private static MainConfig mainConfig;
@@ -30,7 +30,7 @@ public final class TogglePVP extends PluginBase {
     @Getter @Setter
     private static SetCMD setCMD;
 
-    public TogglePVP() {
+    public Pacifism() {
         super();
     }
 

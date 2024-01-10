@@ -1,6 +1,6 @@
-package host.plas.tpvp.runnables;
+package host.plas.pacifism.runnables;
 
-import host.plas.tpvp.players.PVPPlayer;
+import host.plas.pacifism.players.PVPPlayer;
 import io.streamlined.bukkit.instances.BaseRunnable;
 import org.bukkit.Bukkit;
 

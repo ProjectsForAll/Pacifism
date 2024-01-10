@@ -1,7 +1,7 @@
-package host.plas.tpvp.commands;
+package host.plas.pacifism.commands;
 
-import host.plas.tpvp.TogglePVP;
-import host.plas.tpvp.players.PVPPlayer;
+import host.plas.pacifism.Pacifism;
+import host.plas.pacifism.players.PVPPlayer;
 import io.streamlined.bukkit.commands.CommandContext;
 import io.streamlined.bukkit.commands.Sender;
 import io.streamlined.bukkit.commands.SimplifiedCommand;
@@ -10,14 +10,12 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.concurrent.ConcurrentSkipListSet;
 
-public class SetCMD extends SimplifiedCommand {
-    public SetCMD() {
-        super("setpvp", TogglePVP.getInstance());
+public class ToggleCMD extends SimplifiedCommand {
+    public ToggleCMD() {
+        super("togglepvp", Pacifism.getInstance());
     }
 
     @Override
@@ -29,38 +27,15 @@ public class SetCMD extends SimplifiedCommand {
         }
         CommandSender sender = senderOptional.get();
 
-        if (! ctx.isArgUsable(0)) {
-            ctx.sendMessage("&cYou must specify a value to set!");
-            return true;
-        }
-
-        String value = ctx.getStringArg(0).toLowerCase();
-        boolean valueBool;
-        switch (value) {
-            case "1":
-            case "on":
-            case "true":
-                valueBool = true;
-                break;
-            case "0":
-            case "off":
-            case "false":
-                valueBool = false;
-                break;
-            default:
-                ctx.sendMessage("&cYou must specify a valid boolean value!");
-                return true;
-        }
-
         OfflinePlayer target = null;
 
-        if (ctx.isArgUsable(1)) {
+        if (ctx.isArgUsable(0)) {
             if (! sender.hasPermission("togglepvp.others.toggle")) {
                 ctx.sendMessage("&cYou do not have permission to toggle other players' PVP!");
                 return true;
             }
 
-            String targetName = ctx.getStringArg(1);
+            String targetName = ctx.getStringArg(0);
             OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(targetName);
             if (offlinePlayer == null) {
                 ctx.sendMessage("That player does not exist!");
@@ -79,7 +54,7 @@ public class SetCMD extends SimplifiedCommand {
 
         PVPPlayer pvpPlayer = PVPPlayer.getOrGetPlayer(target.getUniqueId().toString());
 
-        pvpPlayer.setPvpEnabled(valueBool);
+        pvpPlayer.togglePVP();
 
         if (! sender.equals(target)) {
             ctx.sendMessage("&eYou have " + (pvpPlayer.isPvpEnabled() ? "&aenabled" : "&cdisabled") + " " +
@@ -105,26 +80,20 @@ public class SetCMD extends SimplifiedCommand {
             return new ConcurrentSkipListSet<>();
         }
 
-        if (ctx.getArgs().size() == 2) {
-            OfflinePlayer sender = senderOptional.get();
-            if (sender.getPlayer() == null) {
-                return new ConcurrentSkipListSet<>();
-            }
-            Player sPlayer = sender.getPlayer();
-
-            if (!sPlayer.hasPermission("togglepvp.others.set")) {
-                return new ConcurrentSkipListSet<>();
-            }
-
-            if (!ctx.isArgUsable(1)) {
-                return new ConcurrentSkipListSet<>();
-            }
-
-            return new ConcurrentSkipListSet<>(Bukkit.getOnlinePlayers().stream().map(Player::getName).toList());
-        } else if (ctx.getArgs().size() <= 1) {
-            return new ConcurrentSkipListSet<>(List.of("on", "off", "true", "false", "1", "0"));
-        } else {
+        OfflinePlayer sender = senderOptional.get();
+        if (sender.getPlayer() == null) {
             return new ConcurrentSkipListSet<>();
         }
+        Player sPlayer = sender.getPlayer();
+
+        if (! sPlayer.hasPermission("togglepvp.others.toggle")) {
+            return new ConcurrentSkipListSet<>();
+        }
+
+        if (! ctx.isArgUsable(0)) {
+            return new ConcurrentSkipListSet<>();
+        }
+
+        return new ConcurrentSkipListSet<>(Bukkit.getOnlinePlayers().stream().map(Player::getName).toList());
     }
 }

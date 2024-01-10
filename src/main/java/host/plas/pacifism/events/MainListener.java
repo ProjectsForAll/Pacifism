@@ -1,22 +1,14 @@
-package host.plas.tpvp.events;
+package host.plas.pacifism.events;
 
-import host.plas.tpvp.players.PVPPlayer;
+import host.plas.pacifism.players.PVPPlayer;
 import io.streamlined.bukkit.commands.Sender;
-import lombok.Getter;
-import lombok.Setter;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Explosive;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.projectiles.ProjectileSource;
-
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentSkipListMap;
 
 public class MainListener implements Listener {
     @EventHandler(ignoreCancelled = true)

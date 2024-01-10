@@ -1,13 +1,11 @@
-package host.plas.tpvp.config;
+package host.plas.pacifism.config;
 
-import host.plas.tpvp.TogglePVP;
+import host.plas.pacifism.Pacifism;
 import tv.quaint.storage.resources.flat.simple.SimpleConfiguration;
-
-import java.io.File;
 
 public class MainConfig extends SimpleConfiguration {
     public MainConfig() {
-        super("config.yml", TogglePVP.getInstance(), false);
+        super("config.yml", Pacifism.getInstance(), false);
     }
 
     @Override

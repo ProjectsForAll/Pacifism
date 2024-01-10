@@ -1,4 +1,4 @@
-package host.plas.tpvp.events;
+package host.plas.pacifism.events;
 
 import io.streamlined.bukkit.instances.BaseRunnable;
 import lombok.Getter;
