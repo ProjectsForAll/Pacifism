@@ -15,6 +15,7 @@ public class WorldConfig extends SimpleConfiguration {
     @Override
     public void init() {
         getWorlds();
+        isWhitelist();
     }
 
     public ConcurrentSkipListSet<String> getWorlds() {
