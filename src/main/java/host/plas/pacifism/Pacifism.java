@@ -2,7 +2,9 @@ package host.plas.pacifism;
 
 import host.plas.pacifism.commands.SetCMD;
 import host.plas.pacifism.commands.ToggleCMD;
+import host.plas.pacifism.commands.WorldWhitelistCMD;
 import host.plas.pacifism.config.MainConfig;
+import host.plas.pacifism.config.WorldConfig;
 import host.plas.pacifism.events.MainListener;
 import host.plas.pacifism.players.PVPPlayer;
 import host.plas.pacifism.runnables.Ticker;
@@ -18,6 +20,8 @@ public final class Pacifism extends PluginBase {
 
     @Getter @Setter
     private static MainConfig mainConfig;
+    @Getter @Setter
+    private static WorldConfig worldConfig;
 
     @Getter @Setter
     private static Ticker ticker;
@@ -29,6 +33,8 @@ public final class Pacifism extends PluginBase {
     private static ToggleCMD toggleCMD;
     @Getter @Setter
     private static SetCMD setCMD;
+    @Getter @Setter
+    private static WorldWhitelistCMD worldWhitelistCMD;
 
     public Pacifism() {
         super();
@@ -40,6 +46,7 @@ public final class Pacifism extends PluginBase {
         instance = this;
 
         mainConfig = new MainConfig();
+        worldConfig = new WorldConfig();
 
         ticker = new Ticker();
 
@@ -47,9 +54,8 @@ public final class Pacifism extends PluginBase {
         Bukkit.getPluginManager().registerEvents(mainListener, this);
 
         toggleCMD = new ToggleCMD();
-        toggleCMD.register();
         setCMD = new SetCMD();
-        setCMD.register();
+        worldWhitelistCMD = new WorldWhitelistCMD();
     }
 
     @Override

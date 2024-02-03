@@ -15,3 +15,9 @@ commands:
       - spvp
       - pvpset
     permission: togglepvp.command.setpvp
+  worldwhitelist:
+    description: World Whitelist
+    aliases:
+      - wwl
+      - whitelist
+    permission: togglepvp.command.worldwhitelist
