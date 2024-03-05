@@ -1,11 +1,13 @@
 package host.plas.pacifism.config;
 
 import host.plas.pacifism.Pacifism;
+import host.plas.pacifism.database.ConnectorSet;
+import host.plas.pacifism.database.DatabaseType;
 import tv.quaint.storage.resources.flat.simple.SimpleConfiguration;
 
 public class MainConfig extends SimpleConfiguration {
     public MainConfig() {
-        super("config.yml", Pacifism.getInstance(), false);
+        super("config.yml", Pacifism.getInstance(), true);
     }
 
     @Override
@@ -15,9 +17,21 @@ public class MainConfig extends SimpleConfiguration {
         getPlayerForceToggleEnabled();
         getPlayerForceToggleMessage();
         getPlayerForceToggleSendMessage();
+
+        getPlayerToggleCooldownEnabled();
+        getPlayerToggleCooldownTicks();
+
+        getDatabaseHost();
+        getDatabasePort();
+        getDatabaseUsername();
+        getDatabasePassword();
+        getDatabaseTablePrefix();
+        getDatabaseName();
+        getDatabaseType();
+        getSqliteFileName();
     }
 
-    public int getPlayerForceToggleTicks() {
+    public long getPlayerForceToggleTicks() {
         reloadResource();
 
         return getOrSetDefault("player.force-toggle.after", 20 * 60 * 15); // 15 minutes
@@ -46,5 +60,78 @@ public class MainConfig extends SimpleConfiguration {
         reloadResource();
 
         return getOrSetDefault("player.force-toggle.send-message", true); // The message.
+    }
+
+    public boolean getPlayerToggleCooldownEnabled() {
+        reloadResource();
+
+        return getOrSetDefault("player.toggle.cool-down.enabled", true);
+    }
+
+    public long getPlayerToggleCooldownTicks() {
+        reloadResource();
+
+        return getOrSetDefault("player.toggle.cool-down.ticks", 600); // 30 seconds
+    }
+
+    public String getDatabaseHost() {
+        reloadResource();
+
+        return getOrSetDefault("database.host", "localhost");
+    }
+
+    public int getDatabasePort() {
+        reloadResource();
+
+        return getOrSetDefault("database.port", 3306);
+    }
+
+    public String getDatabaseUsername() {
+        reloadResource();
+
+        return getOrSetDefault("database.username", "root");
+    }
+
+    public String getDatabasePassword() {
+        reloadResource();
+
+        return getOrSetDefault("database.password", "password");
+    }
+
+    public String getDatabaseTablePrefix() {
+        reloadResource();
+
+        return getOrSetDefault("database.table-prefix", "pacifism_");
+    }
+
+    public String getDatabaseName() {
+        reloadResource();
+
+        return getOrSetDefault("database.database", "pacifism");
+    }
+
+    public DatabaseType getDatabaseType() {
+        reloadResource();
+
+        return DatabaseType.valueOf(getOrSetDefault("database.type", DatabaseType.SQLITE.name()).toUpperCase());
+    }
+
+    public String getSqliteFileName() {
+        reloadResource();
+
+        return getOrSetDefault("database.sqlite-file-name", "pacifism.db");
+    }
+
+    public ConnectorSet getConnectorSet() {
+        return new ConnectorSet(
+                getDatabaseType(),
+                getDatabaseHost(),
+                getDatabasePort(),
+                getDatabaseName(),
+                getDatabaseUsername(),
+                getDatabasePassword(),
+                getDatabaseTablePrefix(),
+                getSqliteFileName()
+        );
     }
 }

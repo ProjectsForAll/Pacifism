@@ -1,0 +1,54 @@
+player:
+  # Grace Period.
+  # force-toggle is the same as grace-period.
+  force-toggle:
+    # If grace-period is enabled.
+    # true = plugin will use the grace-period.
+    enabled: true
+    # The time in seconds of the grace-period.
+    # After this many game ticks, it will set
+    # the player's pvp status to the "set-as".
+    after: 18000 # 15 minutes
+    # The status to set the player's pvp status
+    # to after the grace-period.
+    # true = player can pvp and be pvp-ed.
+    set-as: true
+    # The message to send to the player when
+    # the grace-period is over. (When the above
+    # "after" time has passed.)
+    message: "&7&oYou seem fit to &c&lfight&8&o! &7&oWe have enabled your &c&lPVP&8&o!"
+    # Should the plugin send the above message?
+    # true = yes, send the message.
+    send-message: true
+  # When players are toggling PVP...
+  toggle:
+    # The cool-down after toggling PVP.
+    cool-down:
+      # If cool-down is enabled.
+      enabled: true
+      # This is in server ticks.
+      # 20 ticks = 1 second.
+      # 600 ticks = 30 seconds.
+      ticks: 600
+
+# The plugin's database settings.
+database:
+  # The type of database to use.
+  # MYSQL = MySQL
+  # SQLITE = SQLite
+  # No other types are supported at this time.
+  type: 'SQLITE'
+  # The host or IP of the MySQL server.
+  host: 'localhost'
+  # The port of the MySQL server.
+  port: 3306
+  # The username to use to connect to the MySQL server.
+  username: 'root'
+  # The password to use to connect to the MySQL server.
+  password: 'password'
+  # The prefix to use for the tables in the database.
+  table-prefix: 'pacifism_'
+  # The name of the database to use (when using MySQL).
+  database: 'pacifism'
+  # The name of the SQLite file to use (when using SQLite).
+  sqlite-file-name: 'pacifism.db'

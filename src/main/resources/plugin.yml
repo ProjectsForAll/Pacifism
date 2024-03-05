@@ -8,16 +8,16 @@ commands:
     aliases:
       - tpvp
       - pvp
-    permission: togglepvp.command.togglepvp
+    permission: pacifism.command.togglepvp
   setpvp:
     description: Set PVP
     aliases:
       - spvp
       - pvpset
-    permission: togglepvp.command.setpvp
+    permission: pacifism.command.setpvp
   worldwhitelist:
     description: World Whitelist
     aliases:
       - wwl
       - whitelist
-    permission: togglepvp.command.worldwhitelist
+    permission: pacifism.command.worldwhitelist

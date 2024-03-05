@@ -1,7 +1,8 @@
 package host.plas.pacifism.commands;
 
 import host.plas.pacifism.Pacifism;
-import host.plas.pacifism.players.PVPPlayer;
+import host.plas.pacifism.players.PacifismPlayer;
+import io.streamlined.bukkit.commands.CommandArgument;
 import io.streamlined.bukkit.commands.CommandContext;
 import io.streamlined.bukkit.commands.Sender;
 import io.streamlined.bukkit.commands.SimplifiedCommand;
@@ -76,7 +77,28 @@ public class SetCMD extends SimplifiedCommand {
             }
         }
 
-        PVPPlayer pvpPlayer = PVPPlayer.getOrGetPlayer(target.getUniqueId().toString());
+        boolean isForced = false;
+        for (CommandArgument argument : ctx.getArgs()) {
+            if (argument.getContent().equals("-f") && sender.hasPermission("togglepvp.force")) {
+                isForced = true;
+                break;
+            }
+        }
+
+        PacifismPlayer pvpPlayer = PacifismPlayer.getOrGetPlayer(target.getUniqueId().toString());
+
+        if (! isForced) {
+            if (! pvpPlayer.canTogglePvp() && valueBool != pvpPlayer.isPvpEnabled() && Pacifism.getMainConfig().getPlayerToggleCooldownEnabled()) {
+                if (sender.equals(target)) {
+                    ctx.sendMessage("&cYou cannot toggle your PVP!");
+                    ctx.sendMessage("&cYou have &f" + pvpPlayer.getCooldownSecondsLeft() + " &cseconds left before you can toggle your PVP again!");
+                } else {
+                    ctx.sendMessage("&cYou cannot toggle " + target.getName() + "'s PVP!");
+                    ctx.sendMessage("&cThey have &f" + pvpPlayer.getCooldownSecondsLeft() + " &cseconds left before they can toggle their PVP again!");
+                }
+                return false;
+            }
+        }
 
         pvpPlayer.setPvpEnabled(valueBool);
 
@@ -99,31 +121,40 @@ public class SetCMD extends SimplifiedCommand {
 
     @Override
     public ConcurrentSkipListSet<String> tabComplete(CommandContext ctx) {
+        ConcurrentSkipListSet<String> completions = new ConcurrentSkipListSet<>();
+
         Optional<OfflinePlayer> senderOptional = ctx.getSender().getOfflinePlayer();
         if (senderOptional.isEmpty()) {
-            return new ConcurrentSkipListSet<>();
+            return completions;
         }
 
+        OfflinePlayer sender = senderOptional.get();
+        if (sender.getPlayer() == null) {
+            return completions;
+        }
+        Player sPlayer = sender.getPlayer();
+
+
         if (ctx.getArgs().size() == 2) {
-            OfflinePlayer sender = senderOptional.get();
-            if (sender.getPlayer() == null) {
-                return new ConcurrentSkipListSet<>();
-            }
-            Player sPlayer = sender.getPlayer();
+            if (sPlayer.hasPermission("pacifism.force")) completions.add("-f");
 
-            if (!sPlayer.hasPermission("togglepvp.others.set")) {
-                return new ConcurrentSkipListSet<>();
-            }
+            if (! sPlayer.hasPermission("pacifism.others.set")) {
+                return completions;
+            } else {
+                if (ctx.getArgs().size() != 1) return completions;
 
-            if (!ctx.isArgUsable(1)) {
-                return new ConcurrentSkipListSet<>();
+                completions.addAll(Bukkit.getOnlinePlayers().stream().map(Player::getName).toList());
             }
 
-            return new ConcurrentSkipListSet<>(Bukkit.getOnlinePlayers().stream().map(Player::getName).toList());
+            return completions;
         } else if (ctx.getArgs().size() <= 1) {
-            return new ConcurrentSkipListSet<>(List.of("on", "off", "true", "false", "1", "0"));
+            if (! sPlayer.hasPermission("pacifism.command.set")) return completions;
+
+            completions.addAll(List.of("on", "off", "true", "false", "1", "0"));
+
+            return completions;
         } else {
-            return new ConcurrentSkipListSet<>();
+            return completions;
         }
     }
 }
