@@ -5,8 +5,9 @@ import host.plas.pacifism.commands.ToggleCMD;
 import host.plas.pacifism.commands.WorldWhitelistCMD;
 import host.plas.pacifism.config.MainConfig;
 import host.plas.pacifism.config.WorldConfig;
+import host.plas.pacifism.database.PacifismDBOperator;
 import host.plas.pacifism.events.MainListener;
-import host.plas.pacifism.players.PVPPlayer;
+import host.plas.pacifism.players.PacifismPlayer;
 import host.plas.pacifism.runnables.Ticker;
 import io.streamlined.bukkit.PluginBase;
 import lombok.Getter;
@@ -35,6 +36,8 @@ public final class Pacifism extends PluginBase {
     private static SetCMD setCMD;
     @Getter @Setter
     private static WorldWhitelistCMD worldWhitelistCMD;
+    @Getter @Setter
+    private static PacifismDBOperator dbOperator;
 
     public Pacifism() {
         super();
@@ -47,6 +50,8 @@ public final class Pacifism extends PluginBase {
 
         mainConfig = new MainConfig();
         worldConfig = new WorldConfig();
+
+        dbOperator = new PacifismDBOperator(mainConfig.getConnectorSet());
 
         ticker = new Ticker();
 
@@ -63,9 +68,9 @@ public final class Pacifism extends PluginBase {
         // Plugin shutdown logic
         ticker.cancel();
 
-        PVPPlayer.getPlayers().forEach(pvpPlayer -> {
-            pvpPlayer.saveAll();
-            PVPPlayer.unregisterPlayer(pvpPlayer.getUuid());
+        PacifismPlayer.getPlayers().forEach(pvpPlayer -> {
+            pvpPlayer.save();
+            PacifismPlayer.unregisterPlayer(pvpPlayer.getIdentifier());
         });
     }
 }
