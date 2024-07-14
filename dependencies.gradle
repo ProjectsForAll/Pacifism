@@ -79,4 +79,7 @@ ext {
     OTHER_PLUGINS = [
             'me.clip:placeholderapi:2.11.5',
     ]
+    SH_FILES = [
+            'implement/UniversalScheduler.jar',
+    ]
 }

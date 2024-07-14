@@ -1,7 +1,7 @@
 package host.plas.pacifism.database;
 
 import host.plas.pacifism.Pacifism;
-import io.streamlined.bukkit.MessageUtils;
+import host.plas.bou.MessageUtils;
 import lombok.Getter;
 import lombok.Setter;
 import tv.quaint.thebase.lib.hikari.HikariConfig;

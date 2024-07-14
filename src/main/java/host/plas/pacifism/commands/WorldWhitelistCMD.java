@@ -1,8 +1,8 @@
 package host.plas.pacifism.commands;
 
 import host.plas.pacifism.Pacifism;
-import io.streamlined.bukkit.commands.CommandContext;
-import io.streamlined.bukkit.commands.SimplifiedCommand;
+import host.plas.bou.commands.CommandContext;
+import host.plas.bou.commands.SimplifiedCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.generator.WorldInfo;
 

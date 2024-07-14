@@ -1,6 +1,6 @@
 package host.plas.pacifism.events;
 
-import io.streamlined.bukkit.instances.BaseRunnable;
+import host.plas.bou.scheduling.BaseRunnable;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.block.Block;
@@ -11,7 +11,7 @@ import java.util.Optional;
 import java.util.concurrent.ConcurrentSkipListSet;
 
 @Getter @Setter
-public class WatchedBlock extends BaseRunnable {
+public class WatchedBlock extends BaseRunnable implements Comparable<WatchedBlock> {
     private Block block;
     private Player interactingPlayer;
     private long ticksLeft;
@@ -46,19 +46,15 @@ public class WatchedBlock extends BaseRunnable {
     }
 
     @Override
-    public void execute() {
+    public void run() {
         unregister();
 
         cancel();
     }
 
     @Override
-    public int compareTo(@NotNull BaseRunnable o) {
-        if (! (o instanceof WatchedBlock)) return super.compareTo(o);
-
-        WatchedBlock watchedBlock = (WatchedBlock) o;
-
-        return getBlockString().compareTo(watchedBlock.getBlockString());
+    public int compareTo(@NotNull WatchedBlock o) {
+        return getBlockString().compareTo(o.getBlockString());
     }
 
     @Getter @Setter

@@ -10,7 +10,7 @@ import host.plas.pacifism.events.MainListener;
 import host.plas.pacifism.managers.PlayerManager;
 import host.plas.pacifism.players.PacifismPlayer;
 import host.plas.pacifism.runnables.Ticker;
-import io.streamlined.bukkit.PluginBase;
+import host.plas.bou.PluginBase;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
@@ -71,7 +71,7 @@ public final class Pacifism extends PluginBase {
 
         PlayerManager.getLoadedPlayers().forEach(pvpPlayer -> {
             pvpPlayer.save();
-            PlayerManager.unloadPlayer(pvpPlayer.getIdentifier());
+            pvpPlayer.unload();
         });
     }
 }

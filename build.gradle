@@ -41,12 +41,13 @@ disableAutoTargetJvm()
 dependencies {
     // Defaults.
     compileOnly(files(FILES))
+    shadow(implementation(compileOnly(files(SH_FILES))))
     annotationProcessor(ANNO)
     implementation(IMPL)
     compileOnly(COMP_ONLY)
     shadow(SHADOW)
 
-    implementation(annotationProcessor(shadow("com.github.streamline-essentials:BukkitOfUtils:-SNAPSHOT")))
+    implementation(annotationProcessor(shadow("com.github.Streamline-Essentials:BukkitOfUtils:-SNAPSHOT")))
 
     // Other Plugins
     compileOnly(OTHER_PLUGINS)

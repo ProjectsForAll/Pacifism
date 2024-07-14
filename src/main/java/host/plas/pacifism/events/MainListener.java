@@ -4,13 +4,15 @@ import host.plas.pacifism.Pacifism;
 import host.plas.pacifism.config.WorldConfig;
 import host.plas.pacifism.managers.PlayerManager;
 import host.plas.pacifism.players.PacifismPlayer;
-import io.streamlined.bukkit.commands.Sender;
+import host.plas.bou.commands.Sender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.player.PlayerLoginEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.projectiles.ProjectileSource;
 
 public class MainListener implements Listener {
@@ -95,4 +97,20 @@ public class MainListener implements Listener {
 //        if (! (damaged instanceof Player)) return;
 //        if (cause != EntityDamageEvent.DamageCause.ENTITY_EXPLOSION && cause != EntityDamageEvent.DamageCause.BLOCK_EXPLOSION) return;
 //    }
+
+    @EventHandler
+    public void onLogin(PlayerLoginEvent event) {
+        Player player = event.getPlayer();
+
+        PacifismPlayer pvpPlayer = PlayerManager.getOrGetPlayer(player);
+    }
+
+    @EventHandler
+    public void onLogout(PlayerQuitEvent event) {
+        Player player = event.getPlayer();
+
+        PacifismPlayer pvpPlayer = PlayerManager.getOrGetPlayer(player);
+        pvpPlayer.save();
+        pvpPlayer.unload();
+    }
 }

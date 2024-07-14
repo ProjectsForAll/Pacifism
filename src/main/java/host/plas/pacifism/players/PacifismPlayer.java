@@ -2,7 +2,7 @@ package host.plas.pacifism.players;
 
 import host.plas.pacifism.Pacifism;
 import host.plas.pacifism.managers.PlayerManager;
-import io.streamlined.bukkit.commands.Sender;
+import host.plas.bou.commands.Sender;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
@@ -100,7 +100,11 @@ public class PacifismPlayer implements Identifiable {
     }
 
     public void tick() {
-        if (! isOnline()) return;
+        if (! isOnline()) {
+            save();
+            unload();
+            return;
+        }
         Player player = getPlayer();
 
         playTicks ++;
@@ -138,7 +142,7 @@ public class PacifismPlayer implements Identifiable {
 
             PacifismPlayer player = optional.get();
             this.pvpEnabled = player.pvpEnabled;
-            this.playTicks = player.playTicks;
+            this.playTicks += player.playTicks;
             this.toggledByForce = player.toggledByForce;
             this.hasToggled = player.hasToggled;
             this.lastPvpUpdate = player.lastPvpUpdate;
