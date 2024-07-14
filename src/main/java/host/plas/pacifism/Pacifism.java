@@ -7,6 +7,7 @@ import host.plas.pacifism.config.MainConfig;
 import host.plas.pacifism.config.WorldConfig;
 import host.plas.pacifism.database.PacifismDBOperator;
 import host.plas.pacifism.events.MainListener;
+import host.plas.pacifism.managers.PlayerManager;
 import host.plas.pacifism.players.PacifismPlayer;
 import host.plas.pacifism.runnables.Ticker;
 import io.streamlined.bukkit.PluginBase;
@@ -68,9 +69,9 @@ public final class Pacifism extends PluginBase {
         // Plugin shutdown logic
         ticker.cancel();
 
-        PacifismPlayer.getPlayers().forEach(pvpPlayer -> {
+        PlayerManager.getLoadedPlayers().forEach(pvpPlayer -> {
             pvpPlayer.save();
-            PacifismPlayer.unregisterPlayer(pvpPlayer.getIdentifier());
+            PlayerManager.unloadPlayer(pvpPlayer.getIdentifier());
         });
     }
 }

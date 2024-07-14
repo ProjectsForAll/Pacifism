@@ -11,19 +11,19 @@ public class Statements {
         CREATE_TABLE("CREATE TABLE IF NOT EXISTS `%table_prefix%players` (" +
                 "Uuid VARCHAR(36) PRIMARY KEY," +
                 "PvpEnabled BOOLEAN," +
-                "PlayTicks INT," +
+                "PlayTicks BIGINT," +
                 "ForceToggled BOOLEAN," +
                 "HasToggled BOOLEAN," +
-                "LastUpdate INT" +
+                "LastUpdate BIGINT" +
                 ");"),
         PUSH_PLAYER("INSERT INTO `%table_prefix%players` (" +
                 "Uuid, PvpEnabled, PlayTicks, ForceToggled, HasToggled, LastUpdate" +
                 ") VALUES (" +
-                "'%uuid%', %pvp_enabled%, %play_ticks%, %force_toggle%, %has_toggled%, %last_update%" +
+                "?, ?, ?, ?, ?, ?" +
                 ") ON DUPLICATE KEY UPDATE " +
-                "PvpEnabled = %pvp_enabled%, PlayTicks = %play_ticks%, ForceToggled = %force_toggle%, HasToggled = %has_toggled%, LastUpdate = %last_update%" +
+                "PvpEnabled = ?, PlayTicks = ?, ForceToggled = ?, HasToggled = ?, LastUpdate = ?" +
                 ";"),
-        PULL_PLAYER("SELECT * FROM `%table_prefix%players` WHERE Uuid = '%uuid%';"),
+        PULL_PLAYER("SELECT * FROM `%table_prefix%players` WHERE Uuid = ?;"),
         ;
 
         private final String statement;
@@ -38,18 +38,18 @@ public class Statements {
         CREATE_DATABASE(""),
         CREATE_TABLE("CREATE TABLE IF NOT EXISTS `%table_prefix%players` (" +
                 "Uuid TEXT PRIMARY KEY," +
-                "PvpEnabled BOOLEAN," +
-                "PlayTicks INT," +
-                "ForceToggled BOOLEAN," +
-                "HasToggled BOOLEAN," +
-                "LastUpdate INT" +
+                "PvpEnabled INTEGER," +
+                "PlayTicks BIGINT," +
+                "ForceToggled INTEGER," +
+                "HasToggled INTEGER," +
+                "LastUpdate BIGINT" +
                 ");"),
         PUSH_PLAYER("INSERT OR REPLACE INTO `%table_prefix%players` (" +
                 "Uuid, PvpEnabled, PlayTicks, ForceToggled, HasToggled, LastUpdate" +
                 ") VALUES (" +
-                "'%uuid%', %pvp_enabled%, %play_ticks%, %force_toggle%, %has_toggled%, %last_update%" +
+                "?, ?, ?, ?, ?, ?" +
                 ");"),
-        PULL_PLAYER("SELECT * FROM `%table_prefix%players` WHERE Uuid = '%uuid%';"),
+        PULL_PLAYER("SELECT * FROM `%table_prefix%players` WHERE Uuid = ?;"),
         ;
 
         private final String statement;

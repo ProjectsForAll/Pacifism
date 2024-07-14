@@ -1,6 +1,7 @@
 package host.plas.pacifism.commands;
 
 import host.plas.pacifism.Pacifism;
+import host.plas.pacifism.managers.PlayerManager;
 import host.plas.pacifism.players.PacifismPlayer;
 import io.streamlined.bukkit.commands.CommandArgument;
 import io.streamlined.bukkit.commands.CommandContext;
@@ -85,7 +86,7 @@ public class SetCMD extends SimplifiedCommand {
             }
         }
 
-        PacifismPlayer pvpPlayer = PacifismPlayer.getOrGetPlayer(target.getUniqueId().toString());
+        PacifismPlayer pvpPlayer = PlayerManager.getOrGetPlayer(target.getUniqueId().toString());
 
         if (! isForced) {
             if (! pvpPlayer.canTogglePvp() && valueBool != pvpPlayer.isPvpEnabled() && Pacifism.getMainConfig().getPlayerToggleCooldownEnabled()) {

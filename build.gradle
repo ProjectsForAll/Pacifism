@@ -1,12 +1,15 @@
-import org.codehaus.groovy.runtime.GStringImpl
-
 plugins {
     id 'java'
     id 'com.github.johnrengelman.shadow' version '7.1.2' // for shadowing
 }
 
+apply from: rootDir.toString() + '/dependencies.gradle'
+
 group = properties['group']
 version = properties['version']
+
+java.sourceCompatibility = JavaVersion.VERSION_11
+java.targetCompatibility = JavaVersion.VERSION_11
 
 ext {
     pluginMain = properties['plugin.main'] == 'default' ?
@@ -24,16 +27,29 @@ repositories {
         name = "sonatype"
         url = "https://oss.sonatype.org/content/groups/public/"
     }
+    maven { url "https://jitpack.io" }
     maven {
-        name = "jitpack"
-        url = "https://jitpack.io"
+        name = "placeholderapi"
+        url = "https://repo.extendedclip.com/content/repositories/placeholderapi/"
     }
+    maven { url 'https://repo.papermc.io/repository/maven-snapshots/' }
+    maven { url 'https://repo.papermc.io/repository/maven-public/' }
 }
 
-dependencies {
-    compileOnly "org.spigotmc:spigot-api:1.20.4-R0.1-SNAPSHOT"
+disableAutoTargetJvm()
 
-    annotationProcessor(shadow(implementation("com.github.Streamline-Essentials:BukkitOfUtils:master-SNAPSHOT")))
+dependencies {
+    // Defaults.
+    compileOnly(files(FILES))
+    annotationProcessor(ANNO)
+    implementation(IMPL)
+    compileOnly(COMP_ONLY)
+    shadow(SHADOW)
+
+    implementation(annotationProcessor(shadow("com.github.streamline-essentials:BukkitOfUtils:-SNAPSHOT")))
+
+    // Other Plugins
+    compileOnly(OTHER_PLUGINS)
 }
 
 processResources {
@@ -66,4 +82,9 @@ shadowJar {
 
 artifacts {
     archives shadowJar
+}
+
+wrapper {
+    gradleVersion = '8.7'
+    distributionType = Wrapper.DistributionType.ALL
 }

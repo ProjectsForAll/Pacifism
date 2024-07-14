@@ -2,6 +2,7 @@ package host.plas.pacifism.events;
 
 import host.plas.pacifism.Pacifism;
 import host.plas.pacifism.config.WorldConfig;
+import host.plas.pacifism.managers.PlayerManager;
 import host.plas.pacifism.players.PacifismPlayer;
 import io.streamlined.bukkit.commands.Sender;
 import org.bukkit.entity.Entity;
@@ -27,8 +28,8 @@ public class MainListener implements Listener {
         Player damagerPlayer = (Player) damager;
         Player damagedPlayer = (Player) damaged;
 
-        PacifismPlayer damagerPVPPlayer = PacifismPlayer.getOrGetPlayer(damagerPlayer);
-        PacifismPlayer damagedPVPPlayer = PacifismPlayer.getOrGetPlayer(damagedPlayer);
+        PacifismPlayer damagerPVPPlayer = PlayerManager.getOrGetPlayer(damagerPlayer);
+        PacifismPlayer damagedPVPPlayer = PlayerManager.getOrGetPlayer(damagedPlayer);
 
         if (! damagerPVPPlayer.isPvpEnabled()) {
             event.setCancelled(true);
@@ -66,8 +67,8 @@ public class MainListener implements Listener {
         WorldConfig worldConfig = Pacifism.getWorldConfig();
         if (! worldConfig.canCheckInWorld(damaged.getWorld())) return;
 
-        PacifismPlayer damagerPVPPlayer = PacifismPlayer.getOrGetPlayer(damagerPlayer);
-        PacifismPlayer damagedPVPPlayer = PacifismPlayer.getOrGetPlayer(damagedPlayer);
+        PacifismPlayer damagerPVPPlayer = PlayerManager.getOrGetPlayer(damagerPlayer);
+        PacifismPlayer damagedPVPPlayer = PlayerManager.getOrGetPlayer(damagedPlayer);
 
         if (! damagerPVPPlayer.isPvpEnabled()) {
             event.setCancelled(true);

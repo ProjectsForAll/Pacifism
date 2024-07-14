@@ -1,6 +1,7 @@
 package host.plas.pacifism.commands;
 
 import host.plas.pacifism.Pacifism;
+import host.plas.pacifism.managers.PlayerManager;
 import host.plas.pacifism.players.PacifismPlayer;
 import io.streamlined.bukkit.commands.CommandArgument;
 import io.streamlined.bukkit.commands.CommandContext;
@@ -61,7 +62,7 @@ public class ToggleCMD extends SimplifiedCommand {
             }
         }
 
-        PacifismPlayer pvpPlayer = PacifismPlayer.getOrGetPlayer(target.getUniqueId().toString());
+        PacifismPlayer pvpPlayer = PlayerManager.getOrGetPlayer(target.getUniqueId().toString());
         boolean valueBool = ! pvpPlayer.isPvpEnabled();
 
         if (! isForced) {

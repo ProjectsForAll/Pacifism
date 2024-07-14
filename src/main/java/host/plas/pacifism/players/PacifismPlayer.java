@@ -1,6 +1,7 @@
 package host.plas.pacifism.players;
 
 import host.plas.pacifism.Pacifism;
+import host.plas.pacifism.managers.PlayerManager;
 import io.streamlined.bukkit.commands.Sender;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,35 +14,11 @@ import java.io.File;
 import java.util.Date;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentSkipListSet;
 
 @Getter
 public class PacifismPlayer implements Identifiable {
-    @Getter @Setter
-    public static class Serializer extends SimpleJsonDocument {
-        public Serializer(String uuid) {
-            super(uuid + ".json", getPlayerFolder(), false);
-        }
-
-        public static File getPlayerFolder() {
-            File mainFolder = Pacifism.getInstance().getDataFolder();
-            return new File(mainFolder, "players");
-        }
-
-        public static boolean folderExists() {
-            return getPlayerFolder().exists();
-        }
-
-        @Override
-        public void onInit() {
-
-        }
-
-        @Override
-        public void onSave() {
-
-        }
-    }
     @Setter
     private String identifier;
 
@@ -71,28 +48,15 @@ public class PacifismPlayer implements Identifiable {
         this.hasToggled = false;
         this.lastPvpUpdate = new Date(0L);
 
-        registerPlayer(this);
+        load();
     }
 
-    public boolean fileExists() {
-        if (! Serializer.folderExists()) return false;
-        File file = new File(Serializer.getPlayerFolder(), getIdentifier() + ".json");
-        return file.exists();
+    public void load() {
+        PlayerManager.loadPlayer(this);
     }
 
-    public void convertOld() {
-        if (! fileExists()) return;
-
-        Serializer serializer = new Serializer(getIdentifier());
-
-        pvpEnabled = serializer.getResource().getBoolean("pvp-enabled");
-        playTicks = serializer.getResource().getInt("play-ticks");
-        toggledByForce = serializer.getResource().getBoolean("toggled-by-force");
-        hasToggled = serializer.getResource().getBoolean("has-toggled");
-
-        serializer.delete();
-
-        save();
+    public void unload() {
+        PlayerManager.unloadPlayer(getIdentifier());
     }
 
     public void save() {
@@ -167,43 +131,19 @@ public class PacifismPlayer implements Identifiable {
         }
     }
 
-    @Getter @Setter
-    private static ConcurrentSkipListSet<PacifismPlayer> players = new ConcurrentSkipListSet<>();
+    public PacifismPlayer augment(CompletableFuture<Optional<PacifismPlayer>> future) {
+        CompletableFuture.runAsync(() -> {
+            Optional<PacifismPlayer> optional = future.join();
+            if (optional.isEmpty()) return;
 
-    public static void registerPlayer(PacifismPlayer player) {
-        players.add(player);
-    }
-
-    public static void unregisterPlayer(String uuid) {
-        players.removeIf(player -> player.getIdentifier().equals(uuid));
-    }
-
-    public static Optional<PacifismPlayer> getPlayer(String uuid) {
-        for (PacifismPlayer player : players) {
-            if (player.getIdentifier().equals(uuid)) {
-                return Optional.of(player);
-            }
-        }
-
-        return Optional.empty();
-    }
-
-    public static Optional<PacifismPlayer> getPlayer(Player player) {
-        return getPlayer(player.getUniqueId().toString());
-    }
-
-    public static PacifismPlayer getOrGetPlayer(String uuid) {
-        return getPlayer(uuid).orElseGet(() -> {
-            Optional<PacifismPlayer> optional = Pacifism.getDbOperator().loadPlayer(uuid);
-            if (optional.isPresent()) return optional.get();
-
-            PacifismPlayer pvpPlayer = new PacifismPlayer(uuid);
-            registerPlayer(pvpPlayer);
-            return pvpPlayer;
+            PacifismPlayer player = optional.get();
+            this.pvpEnabled = player.pvpEnabled;
+            this.playTicks = player.playTicks;
+            this.toggledByForce = player.toggledByForce;
+            this.hasToggled = player.hasToggled;
+            this.lastPvpUpdate = player.lastPvpUpdate;
         });
-    }
 
-    public static PacifismPlayer getOrGetPlayer(Player player) {
-        return getOrGetPlayer(player.getUniqueId().toString());
+        return this;
     }
 }

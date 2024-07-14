@@ -19,5 +19,4 @@ commands:
     description: World Whitelist
     aliases:
       - wwl
-      - whitelist
     permission: pacifism.command.worldwhitelist
