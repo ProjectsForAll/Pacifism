@@ -110,7 +110,6 @@ public class MainListener implements Listener {
         Player player = event.getPlayer();
 
         PacifismPlayer pvpPlayer = PlayerManager.getOrGetPlayer(player);
-        pvpPlayer.save();
         pvpPlayer.unload();
     }
 }

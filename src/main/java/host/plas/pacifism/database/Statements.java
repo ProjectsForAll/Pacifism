@@ -1,5 +1,6 @@
 package host.plas.pacifism.database;
 
+import host.plas.bou.sql.ConnectorSet;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -38,10 +39,10 @@ public class Statements {
         CREATE_DATABASE(""),
         CREATE_TABLE("CREATE TABLE IF NOT EXISTS `%table_prefix%players` (" +
                 "Uuid TEXT PRIMARY KEY," +
-                "PvpEnabled INTEGER," +
+                "PvpEnabled BOOLEAN," +
                 "PlayTicks BIGINT," +
-                "ForceToggled INTEGER," +
-                "HasToggled INTEGER," +
+                "ForceToggled BOOLEAN," +
+                "HasToggled BOOLEAN," +
                 "LastUpdate BIGINT" +
                 ");"),
         PUSH_PLAYER("INSERT OR REPLACE INTO `%table_prefix%players` (" +

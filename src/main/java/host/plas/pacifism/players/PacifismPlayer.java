@@ -8,14 +8,11 @@ import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import tv.quaint.objects.Identifiable;
-import tv.quaint.storage.documents.SimpleJsonDocument;
 
-import java.io.File;
 import java.util.Date;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ConcurrentSkipListSet;
 
 @Getter
 public class PacifismPlayer implements Identifiable {
@@ -31,24 +28,32 @@ public class PacifismPlayer implements Identifiable {
     private boolean hasToggled;
     @Setter
     private Date lastPvpUpdate;
+    @Setter
+    private boolean loadedAtLeastOnce;
 
-    public void setPvpEnabled(boolean bool) {
+    public void setPvpEnabledAs(boolean setAs) {
         boolean old = pvpEnabled;
-        pvpEnabled = bool;
+        this.pvpEnabled = setAs;
 
-        hasToggled = true;
-        if (old != bool) lastPvpUpdate = new Date();
+        this.hasToggled = true;
+        if (! setAs && old != setAs) this.lastPvpUpdate = new Date();
+
+        save();
+    }
+
+    public PacifismPlayer(String uuid, boolean pvpEnabled, long playTicks, boolean toggledByForce, boolean hasToggled, Date lastPvpUpdate) {
+        this.identifier = uuid;
+        this.pvpEnabled = pvpEnabled;
+        this.playTicks = playTicks;
+        this.toggledByForce = toggledByForce;
+        this.hasToggled = hasToggled;
+        this.lastPvpUpdate = lastPvpUpdate;
+
+        this.loadedAtLeastOnce = false;
     }
 
     public PacifismPlayer(String uuid) {
-        this.identifier = uuid;
-        this.pvpEnabled = false;
-        this.playTicks = 0;
-        this.toggledByForce = false;
-        this.hasToggled = false;
-        this.lastPvpUpdate = new Date(0L);
-
-        load();
+        this(uuid, false, 0, false, false, new Date());
     }
 
     public void load() {
@@ -56,7 +61,11 @@ public class PacifismPlayer implements Identifiable {
     }
 
     public void unload() {
-        PlayerManager.unloadPlayer(getIdentifier());
+        unload(true);
+    }
+
+    public void unload(boolean save) {
+        PlayerManager.unloadPlayer(getIdentifier(), save);
     }
 
     public void save() {
@@ -64,7 +73,7 @@ public class PacifismPlayer implements Identifiable {
     }
 
     public void togglePVP() {
-        setPvpEnabled(! pvpEnabled);
+        setPvpEnabledAs(! pvpEnabled);
     }
 
     public Player getPlayer() {
@@ -101,7 +110,6 @@ public class PacifismPlayer implements Identifiable {
 
     public void tick() {
         if (! isOnline()) {
-            save();
             unload();
             return;
         }
@@ -137,15 +145,21 @@ public class PacifismPlayer implements Identifiable {
 
     public PacifismPlayer augment(CompletableFuture<Optional<PacifismPlayer>> future) {
         CompletableFuture.runAsync(() -> {
-            Optional<PacifismPlayer> optional = future.join();
-            if (optional.isEmpty()) return;
+            try {
+                Optional<PacifismPlayer> optional = future.join();
+                if (optional.isEmpty()) return;
+                PacifismPlayer player = optional.get();
 
-            PacifismPlayer player = optional.get();
-            this.pvpEnabled = player.pvpEnabled;
-            this.playTicks += player.playTicks;
-            this.toggledByForce = player.toggledByForce;
-            this.hasToggled = player.hasToggled;
-            this.lastPvpUpdate = player.lastPvpUpdate;
+                this.pvpEnabled = player.pvpEnabled;
+                this.playTicks += player.playTicks;
+                this.toggledByForce = player.toggledByForce;
+                this.hasToggled = player.hasToggled;
+                this.lastPvpUpdate = player.lastPvpUpdate;
+
+                this.loadedAtLeastOnce = true;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         });
 
         return this;

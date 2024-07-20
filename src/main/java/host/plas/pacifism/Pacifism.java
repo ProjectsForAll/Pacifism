@@ -69,9 +69,6 @@ public final class Pacifism extends PluginBase {
         // Plugin shutdown logic
         ticker.cancel();
 
-        PlayerManager.getLoadedPlayers().forEach(pvpPlayer -> {
-            pvpPlayer.save();
-            pvpPlayer.unload();
-        });
+        PlayerManager.getLoadedPlayers().forEach(PacifismPlayer::unload);
     }
 }

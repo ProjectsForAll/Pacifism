@@ -20,9 +20,17 @@ ext {
 repositories {
     mavenCentral()
     maven {
-        name = "spigotmc-repo"
-        url = "https://hub.spigotmc.org/nexus/content/repositories/snapshots/"
+        url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
+
+        // As of Gradle 5.1, you can limit this to only those
+        // dependencies you expect from it
+        content {
+            includeGroup 'org.bukkit'
+            includeGroup 'org.spigotmc'
+        }
     }
+    maven { url = 'https://oss.sonatype.org/content/repositories/snapshots' }
+    maven { url = 'https://oss.sonatype.org/content/repositories/central' }
     maven {
         name = "sonatype"
         url = "https://oss.sonatype.org/content/groups/public/"
@@ -41,13 +49,12 @@ disableAutoTargetJvm()
 dependencies {
     // Defaults.
     compileOnly(files(FILES))
-    shadow(implementation(compileOnly(files(SH_FILES))))
     annotationProcessor(ANNO)
     implementation(IMPL)
     compileOnly(COMP_ONLY)
     shadow(SHADOW)
 
-    implementation(annotationProcessor(shadow("com.github.Streamline-Essentials:BukkitOfUtils:-SNAPSHOT")))
+    implementation(annotationProcessor(shadow("com.github.Streamline-Essentials:BukkitOfUtils:master-SNAPSHOT")))
 
     // Other Plugins
     compileOnly(OTHER_PLUGINS)
@@ -78,7 +85,7 @@ shadowJar {
     buildDir = "target/"
     archiveFileName = "${project.name}-${project.version}.jar"
 
-    minimize()
+    relocate('com.github.Anon8281.universalScheduler', 'net.streamline.libs.universalScheduler')
 }
 
 artifacts {
@@ -88,4 +95,8 @@ artifacts {
 wrapper {
     gradleVersion = '8.7'
     distributionType = Wrapper.DistributionType.ALL
+}
+
+tasks.register("generateTemplates") {
+    // do nothing
 }

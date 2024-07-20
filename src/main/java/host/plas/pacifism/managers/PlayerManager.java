@@ -14,21 +14,22 @@ public class PlayerManager {
     private static ConcurrentSkipListSet<PacifismPlayer> loadedPlayers = new ConcurrentSkipListSet<>();
 
     public static void loadPlayer(PacifismPlayer player) {
+        unloadPlayer(player.getIdentifier(), true);
         loadedPlayers.add(player);
     }
 
-    public static void unloadPlayer(String uuid) {
-        loadedPlayers.removeIf(player -> player.getIdentifier().equals(uuid));
+    public static void unloadPlayer(String uuid, boolean save) {
+        loadedPlayers.forEach(player -> {
+            if (player.getIdentifier().equalsIgnoreCase(uuid)) {
+                if (save) player.save();
+
+                loadedPlayers.remove(player);
+            }
+        });
     }
 
     public static Optional<PacifismPlayer> getPlayer(String uuid) {
-        for (PacifismPlayer player : loadedPlayers) {
-            if (player.getIdentifier().equals(uuid)) {
-                return Optional.of(player);
-            }
-        }
-
-        return Optional.empty();
+        return loadedPlayers.stream().filter(player -> player.getIdentifier().equalsIgnoreCase(uuid)).findFirst();
     }
 
     public static Optional<PacifismPlayer> getPlayer(Player player) {

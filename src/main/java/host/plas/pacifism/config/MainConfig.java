@@ -1,8 +1,8 @@
 package host.plas.pacifism.config;
 
+import host.plas.bou.sql.ConnectorSet;
+import host.plas.bou.sql.DatabaseType;
 import host.plas.pacifism.Pacifism;
-import host.plas.pacifism.database.ConnectorSet;
-import host.plas.pacifism.database.DatabaseType;
 import tv.quaint.storage.resources.flat.simple.SimpleConfiguration;
 
 public class MainConfig extends SimpleConfiguration {

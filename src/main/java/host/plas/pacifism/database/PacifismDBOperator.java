@@ -1,5 +1,8 @@
 package host.plas.pacifism.database;
 
+import host.plas.bou.sql.ConnectorSet;
+import host.plas.bou.sql.DBOperator;
+import host.plas.bou.sql.DatabaseType;
 import host.plas.pacifism.players.PacifismPlayer;
 
 import java.util.Date;
@@ -57,13 +60,6 @@ public class PacifismDBOperator extends DBOperator {
             if (s1 == null) return false;
             if (s1.isBlank() || s1.isEmpty()) return false;
 
-            s1 = s1.replace("%uuid%", player.getIdentifier());
-            s1 = s1.replace("%pvp_enabled%", String.valueOf(player.isPvpEnabled()));
-            s1 = s1.replace("%play_ticks%", String.valueOf(player.getPlayTicks()));
-            s1 = s1.replace("%force_toggle%", String.valueOf(player.isToggledByForce()));
-            s1 = s1.replace("%has_toggled%", String.valueOf(player.isHasToggled()));
-            s1 = s1.replace("%last_update%", String.valueOf(player.getLastPvpUpdate().getTime()));
-
             this.execute(s1, stmt -> {
                 try {
                     stmt.setString(1, player.getIdentifier());
@@ -96,8 +92,6 @@ public class PacifismDBOperator extends DBOperator {
             String s1 = Statements.getStatement(Statements.StatementType.PULL_PLAYER, this.getConnectorSet());
             if (s1.isBlank() || s1.isEmpty()) return Optional.empty();
 
-            s1 = s1.replace("%uuid%", uuid);
-
             AtomicReference<Optional<PacifismPlayer>> atomicReference = new AtomicReference<>(Optional.empty());
             this.executeQuery(s1, stmt -> {
                 try {
@@ -106,11 +100,6 @@ public class PacifismDBOperator extends DBOperator {
                     e.printStackTrace();
                 }
             }, set -> {
-                if (set == null) {
-                    atomicReference.set(Optional.empty());
-                    return;
-                }
-
                 try {
                     if (set.next()) {
                         try {
@@ -122,7 +111,7 @@ public class PacifismDBOperator extends DBOperator {
                             boolean hasToggled = set.getBoolean("HasToggled");
                             long lastUpdate = set.getLong("LastUpdate");
 
-                            player.setPvpEnabled(pvpEnabled);
+                            player.setPvpEnabledAs(pvpEnabled);
                             player.setPlayTicks(playTicks);
                             player.setToggledByForce(forceToggle);
                             player.setHasToggled(hasToggled);
@@ -136,8 +125,6 @@ public class PacifismDBOperator extends DBOperator {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
-                atomicReference.set(Optional.empty());
             });
 
             return atomicReference.get();

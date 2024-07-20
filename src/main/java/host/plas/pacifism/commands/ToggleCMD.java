@@ -56,7 +56,7 @@ public class ToggleCMD extends SimplifiedCommand {
 
         boolean isForced = false;
         for (CommandArgument argument : ctx.getArgs()) {
-            if (argument.getContent().equals("-f") && sender.hasPermission("togglepvp.force")) {
+            if (argument.getContent().equals("-f") && sender.hasPermission("pacifism.force")) {
                 isForced = true;
                 break;
             }
@@ -78,7 +78,7 @@ public class ToggleCMD extends SimplifiedCommand {
             }
         }
 
-        pvpPlayer.setPvpEnabled(valueBool);
+        pvpPlayer.setPvpEnabledAs(valueBool);
 
         if (! sender.equals(target)) {
             ctx.sendMessage("&eYou have " + (pvpPlayer.isPvpEnabled() ? "&aenabled" : "&cdisabled") + " " +
