@@ -1,5 +1,6 @@
 package host.plas.pacifism;
 
+import host.plas.bou.BetterPlugin;
 import host.plas.pacifism.commands.SetCMD;
 import host.plas.pacifism.commands.ToggleCMD;
 import host.plas.pacifism.commands.WorldWhitelistCMD;
@@ -10,13 +11,12 @@ import host.plas.pacifism.events.MainListener;
 import host.plas.pacifism.managers.PlayerManager;
 import host.plas.pacifism.players.PacifismPlayer;
 import host.plas.pacifism.runnables.Ticker;
-import host.plas.bou.PluginBase;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
 
 @Getter @Setter
-public final class Pacifism extends PluginBase {
+public final class Pacifism extends BetterPlugin {
     @Getter @Setter
     private static Pacifism instance;
 

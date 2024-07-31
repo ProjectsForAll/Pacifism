@@ -14,6 +14,7 @@ import org.bukkit.entity.Player;
 
 import java.util.Optional;
 import java.util.concurrent.ConcurrentSkipListSet;
+import java.util.stream.Collectors;
 
 public class ToggleCMD extends SimplifiedCommand {
     public ToggleCMD() {
@@ -123,7 +124,7 @@ public class ToggleCMD extends SimplifiedCommand {
                 return completions;
             }
 
-            completions.addAll(Bukkit.getOnlinePlayers().stream().map(Player::getName).toList());
+            completions.addAll(Bukkit.getOnlinePlayers().stream().map(Player::getName).collect(Collectors.toCollection(ConcurrentSkipListSet::new)));
         }
 
         return completions;

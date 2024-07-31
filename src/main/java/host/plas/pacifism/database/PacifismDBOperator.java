@@ -3,6 +3,7 @@ package host.plas.pacifism.database;
 import host.plas.bou.sql.ConnectorSet;
 import host.plas.bou.sql.DBOperator;
 import host.plas.bou.sql.DatabaseType;
+import host.plas.pacifism.Pacifism;
 import host.plas.pacifism.players.PacifismPlayer;
 
 import java.util.Date;
@@ -12,7 +13,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class PacifismDBOperator extends DBOperator {
     public PacifismDBOperator(ConnectorSet set) {
-        super(set, "Pacifism");
+        super(set, Pacifism.getInstance());
     }
 
     @Override

@@ -15,6 +15,7 @@ import org.bukkit.entity.Player;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentSkipListSet;
+import java.util.stream.Collectors;
 
 public class SetCMD extends SimplifiedCommand {
     public SetCMD() {
@@ -144,7 +145,7 @@ public class SetCMD extends SimplifiedCommand {
             } else {
                 if (ctx.getArgs().size() != 1) return completions;
 
-                completions.addAll(Bukkit.getOnlinePlayers().stream().map(Player::getName).toList());
+                completions.addAll(Bukkit.getOnlinePlayers().stream().map(Player::getName).collect(Collectors.toCollection(ConcurrentSkipListSet::new)));
             }
 
             return completions;

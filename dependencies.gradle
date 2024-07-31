@@ -5,12 +5,6 @@ ext {
     ]
     ANNO = [
             'com.github.Streamline-Essentials:BukkitOfUtils:master-SNAPSHOT',
-            'com.github.server-utilities:TheBase:master-SNAPSHOT',
-            'org.projectlombok:lombok:1.18.30',
-            'commons-codec:commons-codec:1.5',
-            'org.xerial:sqlite-jdbc:3.45.1.0',
-            'mysql:mysql-connector-java:5.1.6',
-            'org.spigotmc:spigot-api:1.20.4-R0.1-SNAPSHOT',
             'dev.folia:folia-api:1.20.4-R0.1-SNAPSHOT',
             'net.kyori:adventure-api:4.16.0',
             'net.kyori:adventure-text-serializer-gson:4.16.0',
@@ -22,14 +16,7 @@ ext {
     ]
     COMP_ONLY = [
             'com.github.Streamline-Essentials:BukkitOfUtils:master-SNAPSHOT',
-            'com.github.server-utilities:TheBase:master-SNAPSHOT',
-            'com.github.hamza-cskn.obliviate-invs:core:4.1.12',
-            'org.spigotmc:spigot-api:1.20.4-R0.1-SNAPSHOT',
             'dev.folia:folia-api:1.20.4-R0.1-SNAPSHOT',
-            'org.projectlombok:lombok:1.18.30',
-            'commons-codec:commons-codec:1.5',
-            'org.xerial:sqlite-jdbc:3.45.1.0',
-            'mysql:mysql-connector-java:5.1.6',
             'net.kyori:adventure-api:4.16.0',
             'net.kyori:adventure-text-serializer-gson:4.16.0',
             'net.kyori:adventure-text-serializer-legacy:4.16.0',
@@ -37,7 +24,6 @@ ext {
             'net.kyori:adventure-text-minimessage:4.16.0',
             'net.kyori:adventure-text-serializer-ansi:4.16.0',
             'net.kyori:ansi:1.0.3',
-            'com.github.Streamline-Essentials:UniversalScheduler:main-SNAPSHOT',
     ]
     FILES = [
     ]

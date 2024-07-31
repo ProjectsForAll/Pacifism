@@ -83,8 +83,6 @@ shadowJar {
 
     buildDir = "target/"
     archiveFileName = "${project.name}-${project.version}.jar"
-
-    relocate('com.github.Anon8281.universalScheduler', 'net.streamline.libs.universalScheduler')
 }
 
 artifacts {
