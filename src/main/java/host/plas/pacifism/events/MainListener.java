@@ -1,16 +1,19 @@
 package host.plas.pacifism.events;
 
 import host.plas.pacifism.Pacifism;
-import host.plas.pacifism.config.WorldConfig;
 import host.plas.pacifism.managers.PlayerManager;
 import host.plas.pacifism.players.PacifismPlayer;
-import host.plas.bou.commands.Sender;
+import host.plas.pacifism.players.PacifismWhitelist;
+import host.plas.pacifism.utils.WorldUtils;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockExplodeEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.ExplosionPrimeEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.projectiles.ProjectileSource;
@@ -24,30 +27,14 @@ public class MainListener implements Listener {
         if (! (damager instanceof Player)) return;
         if (! (damaged instanceof Player)) return;
 
-        WorldConfig worldConfig = Pacifism.getWorldConfig();
-        if (! worldConfig.canCheckInWorld(damaged.getWorld())) return;
+        if (! WorldUtils.canWorldPacify(damaged.getWorld())) return;
 
         Player damagerPlayer = (Player) damager;
         Player damagedPlayer = (Player) damaged;
 
-        PacifismPlayer damagerPVPPlayer = PlayerManager.getOrGetPlayer(damagerPlayer);
-        PacifismPlayer damagedPVPPlayer = PlayerManager.getOrGetPlayer(damagedPlayer);
+        if (WorldUtils.check(damagerPlayer, damagedPlayer, event)) return;
 
-        if (! damagerPVPPlayer.isPvpEnabled()) {
-            event.setCancelled(true);
-
-            Sender damagerSender = new Sender(damagerPlayer);
-            damagerSender.sendMessage("&cYou have PVP disabled! You cannot hurt other players.");
-            return;
-        }
-
-        if (! damagedPVPPlayer.isPvpEnabled()) {
-            event.setCancelled(true);
-
-            Sender damagerSender = new Sender(damagerPlayer);
-            damagerSender.sendMessage("&cThat player has PVP disabled! You cannot hurt them.");
-            return;
-        }
+        // do something else
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -66,37 +53,12 @@ public class MainListener implements Listener {
 
         Player damagerPlayer = (Player) source;
 
-        WorldConfig worldConfig = Pacifism.getWorldConfig();
-        if (! worldConfig.canCheckInWorld(damaged.getWorld())) return;
+        if (! WorldUtils.canWorldPacify(damaged.getWorld())) return;
 
-        PacifismPlayer damagerPVPPlayer = PlayerManager.getOrGetPlayer(damagerPlayer);
-        PacifismPlayer damagedPVPPlayer = PlayerManager.getOrGetPlayer(damagedPlayer);
+        if (WorldUtils.check(damagerPlayer, damagedPlayer, event)) return;
 
-        if (! damagerPVPPlayer.isPvpEnabled()) {
-            event.setCancelled(true);
-
-            Sender damagerSender = new Sender(damagerPlayer);
-            damagerSender.sendMessage("&cYou have PVP disabled! You cannot hurt other players.");
-            return;
-        }
-
-        if (! damagedPVPPlayer.isPvpEnabled()) {
-            event.setCancelled(true);
-
-            Sender damagerSender = new Sender(damagerPlayer);
-            damagerSender.sendMessage("&cThat player has PVP disabled! You cannot hurt them.");
-            return;
-        }
+        // do something else
     }
-
-//    @EventHandler(ignoreCancelled = true)
-//    public void onPlayerDamagePlayerExplode(EntityDamageEvent event) {
-//        Entity damaged = event.getEntity();
-//        EntityDamageEvent.DamageCause cause = event.getCause();
-//
-//        if (! (damaged instanceof Player)) return;
-//        if (cause != EntityDamageEvent.DamageCause.ENTITY_EXPLOSION && cause != EntityDamageEvent.DamageCause.BLOCK_EXPLOSION) return;
-//    }
 
     @EventHandler
     public void onLogin(PlayerLoginEvent event) {
@@ -111,5 +73,29 @@ public class MainListener implements Listener {
 
         PacifismPlayer pvpPlayer = PlayerManager.getOrGetPlayer(player);
         pvpPlayer.unload();
+    }
+
+    @EventHandler
+    public void onBlockExplode(ExplosionPrimeEvent event) {
+        if (event.isCancelled()) return;
+
+        Entity entity = event.getEntity();
+
+        PacifismWhitelist whitelist = Pacifism.getMainConfig().getEntityWhitelist();
+        if (! whitelist.canPacify(entity.getLocation(), entity.getType().name())) {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onBlockExplode(BlockExplodeEvent event) {
+        if (event.isCancelled()) return;
+
+        Block block = event.getBlock();
+
+        PacifismWhitelist whitelist = Pacifism.getMainConfig().getMaterialWhitelist();
+        if (! whitelist.canPacify(block.getLocation(), block.getType().name())) {
+            event.setCancelled(true);
+        }
     }
 }

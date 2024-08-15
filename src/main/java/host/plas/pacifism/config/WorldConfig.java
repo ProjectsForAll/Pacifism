@@ -1,6 +1,7 @@
 package host.plas.pacifism.config;
 
 import host.plas.pacifism.Pacifism;
+import host.plas.pacifism.utils.ConfigUtils;
 import org.bukkit.World;
 import tv.quaint.storage.resources.flat.simple.SimpleConfiguration;
 
@@ -9,7 +10,7 @@ import java.util.concurrent.ConcurrentSkipListSet;
 
 public class WorldConfig extends SimpleConfiguration {
     public WorldConfig() {
-        super("worlds.yml", Pacifism.getInstance(), false);
+        super("worlds.yml", Pacifism.getInstance(), true);
     }
 
     @Override
@@ -18,14 +19,17 @@ public class WorldConfig extends SimpleConfiguration {
         isWhitelist();
     }
 
-    public ConcurrentSkipListSet<String> getWorlds() {
-        reloadResource();
+    public StringWhitelist get() {
+        return ConfigUtils.getWhitelist(this, "world", "", "list", "whitelist", true);
+    }
 
-        return new ConcurrentSkipListSet<>(getOrSetDefault("list", new ArrayList<>()));
+    public ConcurrentSkipListSet<String> getWorlds() {
+        return get().getWhitelist();
     }
 
     public void setWorlds(ConcurrentSkipListSet<String> worlds) {
-        reloadResource();
+        StringWhitelist g = get();
+        g.setWhitelist(worlds);
 
         write("list", new ArrayList<>(worlds));
     }
@@ -46,12 +50,12 @@ public class WorldConfig extends SimpleConfiguration {
         setWorlds(worlds);
     }
 
-    public boolean canCheckInWorld(World world) {
-        return
-                (isWhitelist() && getWorlds().contains(world.getName()))
-                ||
-                (!isWhitelist() && !getWorlds().contains(world.getName()))
-                ;
+    public boolean canPacifyInWorld(World world) {
+        return canPacifyInWorld(world.getName());
+    }
+
+    public boolean canPacifyInWorld(String world) {
+        return get().contains(world);
     }
 
     public boolean isInList(String world) {
@@ -59,13 +63,12 @@ public class WorldConfig extends SimpleConfiguration {
     }
 
     public boolean isWhitelist() {
-        reloadResource();
-
-        return getOrSetDefault("whitelist", false);
+        return ! get().isBlacklist();
     }
 
     public void setWhitelist(boolean whitelist) {
-        reloadResource();
+        StringWhitelist g = get();
+        g.setBlacklist(! whitelist);
 
         write("whitelist", whitelist);
     }

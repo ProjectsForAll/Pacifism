@@ -31,6 +31,52 @@ player:
       # 600 ticks = 30 seconds.
       ticks: 600
 
+# Explosion configuration.
+explosions:
+  # Exploding blocks to block.
+  materials:
+    # The list of materials to block.
+    list:
+    - 'WHITE_BED'
+    - 'ORANGE_BED'
+    - 'MAGENTA_BED'
+    - 'LIGHT_BLUE_BED'
+    - 'YELLOW_BED'
+    - 'LIME_BED'
+    - 'PINK_BED'
+    - 'GRAY_BED'
+    - 'LIGHT_GRAY_BED'
+    - 'CYAN_BED'
+    - 'PURPLE_BED'
+    - 'BLUE_BED'
+    - 'BROWN_BED'
+    - 'GREEN_BED'
+    - 'RED_BED'
+    - 'BLACK_BED'
+    - 'TNT'
+    - 'RESPAWN_ANCHOR'
+    # The type of list to use.
+    is-blacklist: false
+    # The radius to check for players with pacifism on.
+    radius: 15
+  # Exploding entities to block.
+  entities:
+    # The list of entities to block.
+    list:
+    - 'MINECART_TNT'
+    - 'PRIMED_TNT'
+    - 'ENDER_CRYSTAL'
+    # The type of list to use.
+    is-blacklist: false
+    # The radius to check for players with pacifism on.
+    radius: 15
+
+# World configuration.
+worlds:
+  # The worlds to allow or disallow PVP in.
+  list: [] # Leave empty to allow all worlds.
+  is-blacklist: true # true = blacklist, false = whitelist
+
 # The plugin's database settings.
 database:
   # The type of database to use.

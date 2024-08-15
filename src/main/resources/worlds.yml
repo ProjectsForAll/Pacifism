@@ -1,0 +1,6 @@
+# This file contains the configuration for the worlds.
+# Is this a whitelist or blacklist?
+# false = blacklist, true = whitelist
+whitelist: false
+# List of worlds to allow or disallow the plugin in.
+list: []

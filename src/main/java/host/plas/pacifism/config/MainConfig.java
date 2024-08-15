@@ -3,6 +3,8 @@ package host.plas.pacifism.config;
 import host.plas.bou.sql.ConnectorSet;
 import host.plas.bou.sql.DatabaseType;
 import host.plas.pacifism.Pacifism;
+import host.plas.pacifism.players.PacifismWhitelist;
+import host.plas.pacifism.utils.ConfigUtils;
 import tv.quaint.storage.resources.flat.simple.SimpleConfiguration;
 
 public class MainConfig extends SimpleConfiguration {
@@ -29,6 +31,9 @@ public class MainConfig extends SimpleConfiguration {
         getDatabaseName();
         getDatabaseType();
         getSqliteFileName();
+
+        getMaterialWhitelist();
+        getEntityWhitelist();
     }
 
     public long getPlayerForceToggleTicks() {
@@ -133,5 +138,13 @@ public class MainConfig extends SimpleConfiguration {
                 getDatabaseTablePrefix(),
                 getSqliteFileName()
         );
+    }
+
+    public PacifismWhitelist getMaterialWhitelist() {
+        return ConfigUtils.getPWhitelist(this, "explosions.materials", "explosions.materials.", "list", "is-blacklist");
+    }
+
+    public PacifismWhitelist getEntityWhitelist() {
+        return ConfigUtils.getPWhitelist(this, "explosions.entities", "explosions.entities.", "list", "is-blacklist");
     }
 }
