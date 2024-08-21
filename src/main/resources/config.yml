@@ -71,12 +71,6 @@ explosions:
     # The radius to check for players with pacifism on.
     radius: 15
 
-# World configuration.
-worlds:
-  # The worlds to allow or disallow PVP in.
-  list: [] # Leave empty to allow all worlds.
-  is-blacklist: true # true = blacklist, false = whitelist
-
 # The plugin's database settings.
 database:
   # The type of database to use.

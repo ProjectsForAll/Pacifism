@@ -76,13 +76,13 @@ public class MainListener implements Listener {
     }
 
     @EventHandler
-    public void onBlockExplode(ExplosionPrimeEvent event) {
+    public void onEntityExplode(ExplosionPrimeEvent event) {
         if (event.isCancelled()) return;
 
         Entity entity = event.getEntity();
 
         PacifismWhitelist whitelist = Pacifism.getMainConfig().getEntityWhitelist();
-        if (! whitelist.canPacify(entity.getLocation(), entity.getType().name())) {
+        if (whitelist.canPacify(entity.getLocation(), entity.getType().name())) {
             event.setCancelled(true);
         }
     }
@@ -94,7 +94,7 @@ public class MainListener implements Listener {
         Block block = event.getBlock();
 
         PacifismWhitelist whitelist = Pacifism.getMainConfig().getMaterialWhitelist();
-        if (! whitelist.canPacify(block.getLocation(), block.getType().name())) {
+        if (whitelist.canPacify(block.getLocation(), block.getType().name())) {
             event.setCancelled(true);
         }
     }
