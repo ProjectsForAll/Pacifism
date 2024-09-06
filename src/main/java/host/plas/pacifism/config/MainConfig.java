@@ -7,6 +7,8 @@ import host.plas.pacifism.players.PacifismWhitelist;
 import host.plas.pacifism.utils.ConfigUtils;
 import tv.quaint.storage.resources.flat.simple.SimpleConfiguration;
 
+import java.util.concurrent.ConcurrentSkipListMap;
+
 public class MainConfig extends SimpleConfiguration {
     public MainConfig() {
         super("config.yml", Pacifism.getInstance(), true);
@@ -19,6 +21,9 @@ public class MainConfig extends SimpleConfiguration {
         getPlayerForceToggleEnabled();
         getPlayerForceToggleMessage();
         getPlayerForceToggleSendMessage();
+
+        getPlayerForceToggleCountdownEnabled();
+        getPlayerForceToggleCountdownCommands();
 
         getPlayerToggleCooldownEnabled();
         getPlayerToggleCooldownTicks();
@@ -65,6 +70,25 @@ public class MainConfig extends SimpleConfiguration {
         reloadResource();
 
         return getOrSetDefault("player.force-toggle.send-message", true); // The message.
+    }
+
+    public boolean getPlayerForceToggleCountdownEnabled() {
+        reloadResource();
+
+        return getOrSetDefault("player.force-toggle.countdown.enabled", false);
+    }
+
+    public ConcurrentSkipListMap<Long, String> getPlayerForceToggleCountdownCommands() {
+        reloadResource();
+
+        ConcurrentSkipListMap<Long, String> messages = new ConcurrentSkipListMap<>();
+        for (String key : singleLayerKeySet("player.force-toggle.countdown.commands")) {
+            long time = Long.parseLong(key);
+            String message = getOrSetDefault("player.force-toggle.countdown.messages." + key, "");
+            messages.put(time, message);
+        }
+
+        return messages;
     }
 
     public boolean getPlayerToggleCooldownEnabled() {

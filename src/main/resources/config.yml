@@ -20,6 +20,30 @@ player:
     # Should the plugin send the above message?
     # true = yes, send the message.
     send-message: true
+    # Countdown configuration.
+    countdown:
+      # If countdown is enabled.
+      enabled: true
+      # Commands to run at x ticks left.
+      commands:
+        '6000':
+        - '[message] %player_name% &7&oYou have &a&o5 &f&ominutes &7&oleft of your grace period.'
+        '1200':
+        - '[message] %player_name% &7&oYou have &a&o1 &f&ominute &7&oleft of your grace period.'
+        '600':
+        - '[message] %player_name% &7&oYou have &a&o30 &f&oseconds &7&oleft of your grace period.'
+        '300':
+        - '[message] %player_name% &7&oYou have &a&o15 &f&oseconds &7&oleft of your grace period.'
+        '100':
+        - '[message] %player_name% &7&oYou have &a&o5 &f&oseconds &7&oleft of your grace period.'
+        '80':
+        - '[message] %player_name% &a&o4 &f&oseconds&7&o...'
+        '60':
+        - '[message] %player_name% &a&o3 &f&oseconds&7&o...'
+        '40':
+        - '[message] %player_name% &a&o2 &f&oseconds&7&o...'
+        '20':
+        - '[message] %player_name% &a&o1 &f&osecond&7&o...'
   # When players are toggling PVP...
   toggle:
     # The cool-down after toggling PVP.

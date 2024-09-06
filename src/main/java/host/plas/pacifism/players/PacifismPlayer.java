@@ -1,5 +1,6 @@
 package host.plas.pacifism.players;
 
+import host.plas.bou.firestring.FireStringManager;
 import host.plas.pacifism.Pacifism;
 import host.plas.pacifism.managers.PlayerManager;
 import host.plas.bou.commands.Sender;
@@ -10,6 +11,7 @@ import org.bukkit.entity.Player;
 import tv.quaint.objects.Identifiable;
 
 import java.util.Date;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
@@ -124,6 +126,31 @@ public class PacifismPlayer implements Identifiable {
                 long ticks = Pacifism.getMainConfig().getPlayerForceToggleTicks();
                 String message = Pacifism.getMainConfig().getPlayerForceToggleMessage();
                 boolean sendMessage = Pacifism.getMainConfig().getPlayerForceToggleSendMessage();
+
+                long ticksLeft = ticks - playTicks;
+
+                boolean commandEnabled = Pacifism.getMainConfig().getPlayerForceToggleCountdownEnabled();
+                if (commandEnabled) {
+                    for (Map.Entry<Long, String> entry : Pacifism.getMainConfig().getPlayerForceToggleCountdownCommands().entrySet()) {
+                        long time = entry.getKey();
+                        if (ticksLeft != time) continue;
+
+                        String command = entry.getValue();
+                        while (command.startsWith(" ")) {
+                            command = command.substring(1);
+                        }
+
+                        command = command
+                                .replace("%player_name%", player.getName())
+                                .replace("%player_uuid%", player.getUniqueId().toString())
+                                .replace("%player_ticks%", String.valueOf(playTicks))
+                                .replace("%player_ticks_left%", String.valueOf(ticksLeft))
+                                .replace("%set_as%", String.valueOf(setAs))
+                                ;
+
+                        FireStringManager.fire(command);
+                    }
+                }
 
                 if (playTicks >= ticks) {
                     if (pvpEnabled == setAs) {
