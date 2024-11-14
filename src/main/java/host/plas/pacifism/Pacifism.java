@@ -2,6 +2,7 @@ package host.plas.pacifism;
 
 import host.plas.bou.BetterPlugin;
 import host.plas.pacifism.commands.SetCMD;
+import host.plas.pacifism.commands.SetGraceTimeCMD;
 import host.plas.pacifism.commands.ToggleCMD;
 import host.plas.pacifism.commands.WorldWhitelistCMD;
 import host.plas.pacifism.config.MainConfig;
@@ -32,11 +33,14 @@ public final class Pacifism extends BetterPlugin {
     private static MainListener mainListener;
 
     @Getter @Setter
-    private static ToggleCMD toggleCMD;
-    @Getter @Setter
     private static SetCMD setCMD;
     @Getter @Setter
+    private static SetGraceTimeCMD setGraceTimeCMD;
+    @Getter @Setter
+    private static ToggleCMD toggleCMD;
+    @Getter @Setter
     private static WorldWhitelistCMD worldWhitelistCMD;
+
     @Getter @Setter
     private static PacifismDBOperator dbOperator;
 
@@ -59,8 +63,9 @@ public final class Pacifism extends BetterPlugin {
         mainListener = new MainListener();
         Bukkit.getPluginManager().registerEvents(mainListener, this);
 
-        toggleCMD = new ToggleCMD();
         setCMD = new SetCMD();
+        setGraceTimeCMD = new SetGraceTimeCMD();
+        toggleCMD = new ToggleCMD();
         worldWhitelistCMD = new WorldWhitelistCMD();
     }
 

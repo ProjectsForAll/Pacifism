@@ -7,6 +7,8 @@ import host.plas.pacifism.players.PacifismWhitelist;
 import host.plas.pacifism.utils.ConfigUtils;
 import tv.quaint.storage.resources.flat.simple.SimpleConfiguration;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ConcurrentSkipListMap;
 
 public class MainConfig extends SimpleConfiguration {
@@ -75,16 +77,17 @@ public class MainConfig extends SimpleConfiguration {
     public boolean getPlayerForceToggleCountdownEnabled() {
         reloadResource();
 
-        return getOrSetDefault("player.force-toggle.countdown.enabled", false);
+        return getOrSetDefault("player.force-toggle.countdown.enabled", true);
     }
 
-    public ConcurrentSkipListMap<Long, String> getPlayerForceToggleCountdownCommands() {
+    public ConcurrentSkipListMap<Long, List<String>> getPlayerForceToggleCountdownCommands() {
         reloadResource();
 
-        ConcurrentSkipListMap<Long, String> messages = new ConcurrentSkipListMap<>();
+        ConcurrentSkipListMap<Long, List<String>> messages = new ConcurrentSkipListMap<>();
+
         for (String key : singleLayerKeySet("player.force-toggle.countdown.commands")) {
             long time = Long.parseLong(key);
-            String message = getOrSetDefault("player.force-toggle.countdown.messages." + key, "");
+            List<String> message = getOrSetDefault("player.force-toggle.countdown.commands." + key, new ArrayList<>());
             messages.put(time, message);
         }
 

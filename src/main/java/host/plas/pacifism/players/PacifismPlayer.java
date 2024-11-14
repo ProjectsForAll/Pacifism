@@ -10,10 +10,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import tv.quaint.objects.Identifiable;
 
-import java.util.Date;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
 @Getter
@@ -30,6 +27,9 @@ public class PacifismPlayer implements Identifiable {
     private boolean hasToggled;
     @Setter
     private Date lastPvpUpdate;
+    @Setter
+    private long addedGraceTicks;
+
     @Setter
     private boolean loadedAtLeastOnce;
 
@@ -50,6 +50,7 @@ public class PacifismPlayer implements Identifiable {
         this.toggledByForce = toggledByForce;
         this.hasToggled = hasToggled;
         this.lastPvpUpdate = lastPvpUpdate;
+        this.addedGraceTicks = -1;
 
         this.loadedAtLeastOnce = false;
     }
@@ -117,57 +118,58 @@ public class PacifismPlayer implements Identifiable {
         }
         Player player = getPlayer();
 
-        playTicks ++;
+        boolean enabled = Pacifism.getMainConfig().getPlayerForceToggleEnabled();
+        boolean setAs = Pacifism.getMainConfig().getPlayerForceToggleSetAs();
+        long ticks = Pacifism.getMainConfig().getPlayerForceToggleTicks();
+        String message = Pacifism.getMainConfig().getPlayerForceToggleMessage();
+        boolean sendMessage = Pacifism.getMainConfig().getPlayerForceToggleSendMessage();
 
-        if (! toggledByForce && ! hasToggled) {
-            boolean enabled = Pacifism.getMainConfig().getPlayerForceToggleEnabled();
-            if (enabled) {
-                boolean setAs = Pacifism.getMainConfig().getPlayerForceToggleSetAs();
-                long ticks = Pacifism.getMainConfig().getPlayerForceToggleTicks();
-                String message = Pacifism.getMainConfig().getPlayerForceToggleMessage();
-                boolean sendMessage = Pacifism.getMainConfig().getPlayerForceToggleSendMessage();
+        if (enabled) {
+            long tl = ticks - playTicks;
 
-                long ticksLeft = ticks - playTicks;
+            if (addedGraceTicks > -1) {
+                tl = addedGraceTicks;
+            }
 
-                boolean commandEnabled = Pacifism.getMainConfig().getPlayerForceToggleCountdownEnabled();
-                if (commandEnabled) {
-                    for (Map.Entry<Long, String> entry : Pacifism.getMainConfig().getPlayerForceToggleCountdownCommands().entrySet()) {
-                        long time = entry.getKey();
-                        if (ticksLeft != time) continue;
+            boolean commandEnabled = Pacifism.getMainConfig().getPlayerForceToggleCountdownEnabled();
+            if (commandEnabled) {
+                for (Map.Entry<Long, List<String>> entry : Pacifism.getMainConfig().getPlayerForceToggleCountdownCommands().entrySet()) {
+                    long time = entry.getKey();
+                    if (tl != time) continue;
 
-                        String command = entry.getValue();
-                        while (command.startsWith(" ")) {
-                            command = command.substring(1);
-                        }
+                    List<String> commands = entry.getValue();
+                    for (String command : commands) {
+                        command = command.trim();
 
                         command = command
                                 .replace("%player_name%", player.getName())
                                 .replace("%player_uuid%", player.getUniqueId().toString())
                                 .replace("%player_ticks%", String.valueOf(playTicks))
-                                .replace("%player_ticks_left%", String.valueOf(ticksLeft))
+                                .replace("%player_ticks_left%", String.valueOf(tl))
                                 .replace("%set_as%", String.valueOf(setAs))
-                                ;
+                        ;
 
                         FireStringManager.fire(command);
                     }
                 }
+            }
 
-                if (playTicks >= ticks) {
-                    if (pvpEnabled == setAs) {
-                        toggledByForce = true;
-                    } else {
-                        pvpEnabled = setAs;
+            if (tl == 0) {
+                if (pvpEnabled != setAs) pvpEnabled = setAs;
 
-                        if (sendMessage) {
-                            Sender sender = new Sender(player);
-                            sender.sendMessage(message);
-                        }
-
-                        toggledByForce = true;
-                    }
+                if (sendMessage) {
+                    Sender sender = new Sender(player);
+                    sender.sendMessage(message);
                 }
+
+                toggledByForce = true;
             }
         }
+
+        if (addedGraceTicks > -1) {
+            addedGraceTicks --;
+        }
+        playTicks ++;
     }
 
     public PacifismPlayer augment(CompletableFuture<Optional<PacifismPlayer>> future) {
@@ -178,10 +180,11 @@ public class PacifismPlayer implements Identifiable {
                 PacifismPlayer player = optional.get();
 
                 this.pvpEnabled = player.pvpEnabled;
-                this.playTicks += player.playTicks;
+                this.playTicks = player.playTicks;
                 this.toggledByForce = player.toggledByForce;
                 this.hasToggled = player.hasToggled;
                 this.lastPvpUpdate = player.lastPvpUpdate;
+                this.addedGraceTicks = player.addedGraceTicks;
 
                 this.loadedAtLeastOnce = true;
             } catch (Exception e) {

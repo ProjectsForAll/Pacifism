@@ -39,6 +39,16 @@ public class PacifismDBOperator extends DBOperator {
         this.ensureFile();
         this.ensureDatabase();
         this.ensureTables();
+        this.alterTables();
+    }
+
+    @Override
+    public void alterTables() {
+        String s1 = Statements.getStatement(Statements.StatementType.ALTER_TABLE, this.getConnectorSet());
+        if (s1 == null) return;
+        if (s1.isBlank() || s1.isEmpty()) return;
+
+        this.execute(s1, stmt -> {}, true);
     }
 
     public void savePlayer(PacifismPlayer player) {
@@ -69,13 +79,15 @@ public class PacifismDBOperator extends DBOperator {
                     stmt.setBoolean(4, player.isToggledByForce());
                     stmt.setBoolean(5, player.isHasToggled());
                     stmt.setLong(6, player.getLastPvpUpdate().getTime());
+                    stmt.setLong(7, player.getAddedGraceTicks());
 
                     if (this.getType() == DatabaseType.MYSQL) {
-                        stmt.setBoolean(7, player.isPvpEnabled());
-                        stmt.setLong(8, player.getPlayTicks());
-                        stmt.setBoolean(9, player.isToggledByForce());
-                        stmt.setBoolean(10, player.isHasToggled());
-                        stmt.setLong(11, player.getLastPvpUpdate().getTime());
+                        stmt.setBoolean(8, player.isPvpEnabled());
+                        stmt.setLong(9, player.getPlayTicks());
+                        stmt.setBoolean(10, player.isToggledByForce());
+                        stmt.setBoolean(11, player.isHasToggled());
+                        stmt.setLong(12, player.getLastPvpUpdate().getTime());
+                        stmt.setLong(13, player.getAddedGraceTicks());
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -111,12 +123,14 @@ public class PacifismDBOperator extends DBOperator {
                             boolean forceToggle = set.getBoolean("ForceToggled");
                             boolean hasToggled = set.getBoolean("HasToggled");
                             long lastUpdate = set.getLong("LastUpdate");
+                            long addedGraceTime = set.getLong("AddedGraceTime");
 
                             player.setPvpEnabledAs(pvpEnabled);
                             player.setPlayTicks(playTicks);
                             player.setToggledByForce(forceToggle);
                             player.setHasToggled(hasToggled);
                             player.setLastPvpUpdate(new Date(lastUpdate));
+                            player.setAddedGraceTicks(addedGraceTime);
 
                             atomicReference.set(Optional.of(player));
                         } catch (Exception e) {

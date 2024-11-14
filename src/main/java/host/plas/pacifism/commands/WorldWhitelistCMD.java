@@ -16,7 +16,7 @@ public class WorldWhitelistCMD extends SimplifiedCommand {
     @Override
     public boolean command(CommandContext commandContext) {
         if (commandContext.getArgs().isEmpty()) {
-            commandContext.sendMessage("&cUsage: /worldwhitelist <add|remove|list|set-as> [world]");
+            commandContext.sendMessage("&cUsage: /worldwhitelist <add|remove|list|set-as> <world>|<whitelist|blacklist>");
             return false;
         }
 

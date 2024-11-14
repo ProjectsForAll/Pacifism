@@ -24,3 +24,9 @@ commands:
     aliases:
       - wwl
     permission: pacifism.command.worldwhitelist
+  setgracetime:
+    description: Set Grace Time
+    aliases:
+      - sgt
+      - gtset
+    permission: pacifism.command.setgracetime
