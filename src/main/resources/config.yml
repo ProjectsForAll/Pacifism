@@ -95,6 +95,43 @@ explosions:
     # The radius to check for players with pacifism on.
     radius: 15
 
+# PlaceholderAPI configuration.
+placeholders:
+  # Grace Period placeholders.
+  gracetime:
+    # Placeholder for the grace time left.
+    left:
+      # The time in ticks.
+      ticks:
+        # The simple placeholder.
+        simple: "%gracetime_left_ticks%"
+        # The fancy placeholder.
+        fancy: "&a%gracetime_left_ticks% &fticks"
+      # The time in seconds.
+      seconds:
+        # The simple placeholder.
+        simple: "%gracetime_left_seconds%"
+        # The fancy placeholder.
+        fancy: "&a%gracetime_left_seconds% &fseconds"
+  # PVP status placeholders.
+  status:
+    # Placeholder for when PVP is toggled off.
+    pvp-off:
+      # The simple placeholder.
+      # '%status_pvp%' will be replaced with the
+      # status of the player's PVP. (true/false)
+      simple: "%status_pvp%"
+      # The fancy placeholder.
+      fancy: "&c&lOFF"
+    # Placeholder for when PVP is toggled on.
+    pvp-on:
+      # The simple placeholder.
+      # '%status_pvp%' will be replaced with the
+      # status of the player's PVP. (true/false)
+      simple: "%status_pvp%"
+      # The fancy placeholder.
+      fancy: "&a&lON"
+
 # The plugin's database settings.
 database:
   # The type of database to use.

@@ -41,6 +41,16 @@ public class MainConfig extends SimpleConfiguration {
 
         getMaterialWhitelist();
         getEntityWhitelist();
+
+        getPlaceheldGracetimeLeftTicksSimple();
+        getPlaceheldGracetimeLeftTicksFancy();
+        getPlaceheldGracetimeLeftSecondsSimple();
+        getPlaceheldGracetimeLeftSecondsFancy();
+
+        getPlaceheldStatusPvpOffSimple();
+        getPlaceheldStatusPvpOffFancy();
+        getPlaceheldStatusPvpOnSimple();
+        getPlaceheldStatusPvpOnFancy();
     }
 
     public long getPlayerForceToggleTicks() {
@@ -173,5 +183,53 @@ public class MainConfig extends SimpleConfiguration {
 
     public PacifismWhitelist getEntityWhitelist() {
         return ConfigUtils.getPWhitelist(this, "explosions.entities", "explosions.entities.", "list", "is-blacklist");
+    }
+
+    public String getPlaceheldGracetimeLeftTicksSimple() {
+        reloadResource();
+
+        return getOrSetDefault("placeholders.gracetime.left.ticks.simple", "%gracetime_left_ticks%");
+    }
+
+    public String getPlaceheldGracetimeLeftTicksFancy() {
+        reloadResource();
+
+        return getOrSetDefault("placeholders.gracetime.left.ticks.fancy", "&a%gracetime_left_ticks% &fticks");
+    }
+
+    public String getPlaceheldGracetimeLeftSecondsSimple() {
+        reloadResource();
+
+        return getOrSetDefault("placeholders.gracetime.left.seconds.simple", "%gracetime_left_seconds%");
+    }
+
+    public String getPlaceheldGracetimeLeftSecondsFancy() {
+        reloadResource();
+
+        return getOrSetDefault("placeholders.gracetime.left.seconds.fancy", "&a%gracetime_left_seconds% &fseconds");
+    }
+
+    public String getPlaceheldStatusPvpOffSimple() {
+        reloadResource();
+
+        return getOrSetDefault("placeholders.status.pvp-off.simple", "false");
+    }
+
+    public String getPlaceheldStatusPvpOffFancy() {
+        reloadResource();
+
+        return getOrSetDefault("placeholders.status.pvp-off.fancy", "&c&lOFF");
+    }
+
+    public String getPlaceheldStatusPvpOnSimple() {
+        reloadResource();
+
+        return getOrSetDefault("placeholders.status.pvp-on.simple", "true");
+    }
+
+    public String getPlaceheldStatusPvpOnFancy() {
+        reloadResource();
+
+        return getOrSetDefault("placeholders.status.pvp-on.fancy", "&c&lON");
     }
 }

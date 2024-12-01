@@ -10,6 +10,7 @@ import host.plas.pacifism.config.WorldConfig;
 import host.plas.pacifism.database.PacifismDBOperator;
 import host.plas.pacifism.events.MainListener;
 import host.plas.pacifism.managers.PlayerManager;
+import host.plas.pacifism.placeholders.PAPIManager;
 import host.plas.pacifism.players.PacifismPlayer;
 import host.plas.pacifism.runnables.Ticker;
 import lombok.Getter;
@@ -67,6 +68,8 @@ public final class Pacifism extends BetterPlugin {
         setGraceTimeCMD = new SetGraceTimeCMD();
         toggleCMD = new ToggleCMD();
         worldWhitelistCMD = new WorldWhitelistCMD();
+
+        PAPIManager.init();
     }
 
     @Override
