@@ -5,6 +5,8 @@ folia-supported: true
 authors: [ Drak ]
 depend:
   - BukkitOfUtils
+softdepend:
+  - PlaceholderAPI
 
 commands:
   togglepvp:

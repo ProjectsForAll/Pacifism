@@ -12,6 +12,8 @@ public class PAPIManager {
 
     public static void init() {
         if (isEnabled()) {
+            Pacifism.getInstance().logInfo("Found PlaceholderAPI, registering placeholders...");
+            register();
         }
     }
 

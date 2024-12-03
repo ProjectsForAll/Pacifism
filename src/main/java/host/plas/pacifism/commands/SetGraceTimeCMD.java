@@ -4,6 +4,7 @@ import host.plas.bou.commands.CommandArgument;
 import host.plas.bou.commands.CommandContext;
 import host.plas.bou.commands.Sender;
 import host.plas.bou.commands.SimplifiedCommand;
+import host.plas.bou.utils.SenderUtils;
 import host.plas.pacifism.Pacifism;
 import host.plas.pacifism.managers.PlayerManager;
 import host.plas.pacifism.players.PacifismPlayer;
@@ -75,7 +76,8 @@ public class SetGraceTimeCMD extends SimplifiedCommand {
         if (! sender.equals(target)) {
             ctx.sendMessage("&eYou have set &b" + target.getName() + "&e's grace-time to &b" + value + "&e!");
             if (target.getPlayer() != null) {
-                target.getPlayer().sendMessage("&eYour grace-time has been set to &b" + value + "&e!");
+                Sender targetSender = new Sender(target.getPlayer());
+                targetSender.sendMessage("&eYour grace-time has been set to &b" + value + "&e!");
             }
         } else {
             ctx.sendMessage("&eYou have set your grace-time to &b" + value + "&e!");
@@ -100,13 +102,9 @@ public class SetGraceTimeCMD extends SimplifiedCommand {
 
 
         if (ctx.getArgs().size() == 2) {
-            if (sPlayer.hasPermission("pacifism.force")) completions.add("-f");
-
             if (! sPlayer.hasPermission("pacifism.others.gracetime")) {
                 return completions;
             } else {
-                if (ctx.getArgs().size() != 1) return completions;
-
                 completions.addAll(Bukkit.getOnlinePlayers().stream().map(Player::getName).collect(Collectors.toCollection(ConcurrentSkipListSet::new)));
             }
 

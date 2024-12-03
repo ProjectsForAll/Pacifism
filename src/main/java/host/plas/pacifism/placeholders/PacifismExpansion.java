@@ -1,57 +1,36 @@
 package host.plas.pacifism.placeholders;
 
+import host.plas.bou.compat.papi.expansion.BetterExpansion;
+import host.plas.bou.compat.papi.expansion.PlaceholderContext;
 import host.plas.pacifism.Pacifism;
 import host.plas.pacifism.config.MainConfig;
 import host.plas.pacifism.managers.PlayerManager;
 import host.plas.pacifism.players.PacifismPlayer;
 import lombok.Getter;
 import lombok.Setter;
-import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 
 @Getter @Setter
-public class PacifismExpansion extends PlaceholderExpansion {
+public class PacifismExpansion extends BetterExpansion {
     public PacifismExpansion() {
-        register();
+        super(Pacifism.getInstance(), "pacifism",
+                () -> Pacifism.getInstance().getDescription().getAuthors().get(0),
+                () -> Pacifism.getInstance().getDescription().getVersion()
+        );
     }
 
     @Override
-    public @NotNull String getIdentifier() {
-        return "pacifism";
-    }
-
-    @Override
-    public @NotNull String getAuthor() {
-        try {
-            return Pacifism.getInstance().getDescription().getAuthors().get(0);
-        } catch (Exception e) {
-            return "Drak";
-        }
-    }
-
-    @Override
-    public @NotNull String getVersion() {
-        return Pacifism.getInstance().getDescription().getVersion();
-    }
-
-    @Override
-    public boolean persist() {
-        return true;
-    }
-
-    @Override
-    public @Nullable String onRequest(OfflinePlayer player, @NotNull String params) {
-        String argsString = params.toLowerCase();
-        String[] args = params.split("_");
+    public @Nullable String replace(PlaceholderContext context) {
+        OfflinePlayer player = context.getPlayer();
+        String argsString = context.getRawParams().toLowerCase();
 
         if (argsString.startsWith("as_")) {
-            if (args.length < 2) return null;
-            String playerName = args[1];
+            if (context.getArgCount() < 2) return null;
+            String playerName = context.getStringArg(0);
             OfflinePlayer target = null;
             if (playerName.contains("-")) {
                 try {
@@ -66,7 +45,7 @@ public class PacifismExpansion extends PlaceholderExpansion {
 
             if (! target.hasPlayedBefore()) return "";
 
-            return handlePlayerPlaceholders(target, args[0]);
+            return handlePlayerPlaceholders(target, argsString.replace("as_" + playerName + "_", ""));
         } else {
             return handlePlayerPlaceholders(player, argsString);
         }
