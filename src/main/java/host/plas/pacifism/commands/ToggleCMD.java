@@ -32,7 +32,7 @@ public class ToggleCMD extends SimplifiedCommand {
 
         OfflinePlayer target = null;
 
-        if (ctx.isArgUsable(0)) {
+        if (ctx.isArgUsable(0) && ! ctx.getStringArg(0).equals("-f")) {
             if (! sender.hasPermission("pacifism.others.toggle")) {
                 ctx.sendMessage("&cYou do not have permission to toggle other players' PVP!");
                 return true;
@@ -69,11 +69,23 @@ public class ToggleCMD extends SimplifiedCommand {
         if (! isForced) {
             if (! pvpPlayer.canTogglePvp() && valueBool != pvpPlayer.isPvpEnabled() && Pacifism.getMainConfig().getPlayerToggleCooldownEnabled()) {
                 if (sender.equals(target)) {
-                    ctx.sendMessage("&cYou cannot toggle your PVP!");
-                    ctx.sendMessage("&cYou have &f" + pvpPlayer.getCooldownSecondsLeft() + " &cseconds left before you can toggle your PVP again!");
+                    String css = Pacifism.getMessageConfig().getToggleCannotSelfSelf();
+                    String cstl = Pacifism.getMessageConfig().getToggleCannotSelfTimeLeft()
+                            .replace("%time_seconds%", String.valueOf(pvpPlayer.getCooldownSecondsLeft()))
+                            ;
+
+                    if (! css.isBlank()) ctx.sendMessage(css);
+                    if (! cstl.isBlank()) ctx.sendMessage(cstl);
                 } else {
-                    ctx.sendMessage("&cYou cannot toggle " + target.getName() + "'s PVP!");
-                    ctx.sendMessage("&cThey have &f" + pvpPlayer.getCooldownSecondsLeft() + " &cseconds left before they can toggle their PVP again!");
+                    String cos = Pacifism.getMessageConfig().getToggleCannotOtherSelf()
+                            .replace("%player_name%", target.getName())
+                            ;
+                    String cotl = Pacifism.getMessageConfig().getToggleCannotOtherTimeLeft()
+                            .replace("%time_seconds%", String.valueOf(pvpPlayer.getCooldownSecondsLeft()))
+                            ;
+
+                    if (! cos.isBlank()) ctx.sendMessage(cos);
+                    if (! cotl.isBlank()) ctx.sendMessage(cotl);
                 }
                 return false;
             }
@@ -82,18 +94,46 @@ public class ToggleCMD extends SimplifiedCommand {
         pvpPlayer.setPvpEnabledAs(valueBool);
 
         if (! sender.equals(target)) {
-            ctx.sendMessage("&eYou have " + (pvpPlayer.isPvpEnabled() ? "&aenabled" : "&cdisabled") + " " +
-                    "&b" + target.getName() + "&e's PVP&8!" + (pvpPlayer.isPvpEnabled() ? "\n&7(They will be able to " +
-                    "take damage from other " +
-                    "players.)" : "\n&7(They will not be able to take damage from other players.)"));
+            String os = Pacifism.getMessageConfig().getToggleOtherSelf()
+                    .replace("%player_name%", target.getName())
+                    .replace("%status%", pvpPlayer.isPvpEnabled() ? Pacifism.getMessageConfig().getStatusEnabled() : Pacifism.getMessageConfig().getStatusDisabled())
+                    ;
+            String oue = Pacifism.getMessageConfig().getToggleOtherUponEnable()
+                    .replace("%player_name%", sender.getName())
+                    .replace("%status%", pvpPlayer.isPvpEnabled() ? Pacifism.getMessageConfig().getStatusEnabled() : Pacifism.getMessageConfig().getStatusDisabled())
+                    ;
+            String oud = Pacifism.getMessageConfig().getToggleOtherUponDisable()
+                    .replace("%player_name%", sender.getName())
+                    .replace("%status%", pvpPlayer.isPvpEnabled() ? Pacifism.getMessageConfig().getStatusEnabled() : Pacifism.getMessageConfig().getStatusDisabled())
+                    ;
+
+            if (! os.isBlank()) ctx.sendMessage(os);
+            if (! oue.isBlank() && pvpPlayer.isPvpEnabled()) ctx.sendMessage(oue);
+            if (! oud.isBlank() && ! pvpPlayer.isPvpEnabled()) ctx.sendMessage(oud);
+
             if (target.getPlayer() != null) {
+                String oo = Pacifism.getMessageConfig().getToggleOtherOther()
+                        .replace("%player_name%", sender.getName())
+                        .replace("%status%", pvpPlayer.isPvpEnabled() ? Pacifism.getMessageConfig().getStatusEnabled() : Pacifism.getMessageConfig().getStatusDisabled())
+                        ;
+
                 Sender targetSender = new Sender(target.getPlayer());
-                targetSender.sendMessage("&eYour PVP has been " + (pvpPlayer.isPvpEnabled() ? "&aenabled" : "&cdisabled") + "&e" +
-                        " by &b" + sender.getName() + "&e!");
+                if (! oo.isBlank()) targetSender.sendMessage(oo);
             }
         } else {
-            ctx.sendMessage("&eYou have " + (pvpPlayer.isPvpEnabled() ? "&aenabled" : "&cdisabled") + " &eyour PVP&8!" +
-                    (pvpPlayer.isPvpEnabled() ? "\n&7(You will be able to take damage from other players.)" : "\n&7(You will not be able to take damage from other players.)"));
+            String ss = Pacifism.getMessageConfig().getToggleSelfSelf()
+                    .replace("%status%", pvpPlayer.isPvpEnabled() ? Pacifism.getMessageConfig().getStatusEnabled() : Pacifism.getMessageConfig().getStatusDisabled())
+                    ;
+            String sue = Pacifism.getMessageConfig().getToggleSelfUponEnable()
+                    .replace("%status%", pvpPlayer.isPvpEnabled() ? Pacifism.getMessageConfig().getStatusEnabled() : Pacifism.getMessageConfig().getStatusDisabled())
+                    ;
+            String sud = Pacifism.getMessageConfig().getToggleSelfUponDisable()
+                    .replace("%status%", pvpPlayer.isPvpEnabled() ? Pacifism.getMessageConfig().getStatusEnabled() : Pacifism.getMessageConfig().getStatusDisabled())
+                    ;
+
+            if (! ss.isBlank()) ctx.sendMessage(ss);
+            if (! sue.isBlank() && pvpPlayer.isPvpEnabled()) ctx.sendMessage(sue);
+            if (! sud.isBlank() && ! pvpPlayer.isPvpEnabled()) ctx.sendMessage(sud);
         }
         return true;
     }

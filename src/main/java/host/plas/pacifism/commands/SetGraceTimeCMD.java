@@ -74,13 +74,30 @@ public class SetGraceTimeCMD extends SimplifiedCommand {
         pvpPlayer.setAddedGraceTicks(value);
 
         if (! sender.equals(target)) {
-            ctx.sendMessage("&eYou have set &b" + target.getName() + "&e's grace-time to &b" + value + "&e!");
+            String sos = Pacifism.getMessageConfig().getSetGraceTimeSuccessOtherSelf()
+                    .replace("%player_name%", target.getName())
+                    .replace("%value%", String.valueOf(value))
+                    .replace("%time_seconds%", String.valueOf(pvpPlayer.getCooldownSecondsLeft()));
+                    ;
+
+            if (! sos.isBlank()) ctx.sendMessage(sos);
             if (target.getPlayer() != null) {
+                String soo = Pacifism.getMessageConfig().getSetGraceTimeSuccessOtherOther()
+                        .replace("%player_name%", sender.getName())
+                        .replace("%value%", String.valueOf(value))
+                        .replace("%time_seconds%", String.valueOf(pvpPlayer.getCooldownSecondsLeft()));
+                        ;
+
                 Sender targetSender = new Sender(target.getPlayer());
-                targetSender.sendMessage("&eYour grace-time has been set to &b" + value + "&e!");
+                if (! soo.isBlank()) targetSender.sendMessage(soo);
             }
         } else {
-            ctx.sendMessage("&eYou have set your grace-time to &b" + value + "&e!");
+            String sss = Pacifism.getMessageConfig().getSetGraceTimeSuccessSelfSelf()
+                    .replace("%value%", String.valueOf(value))
+                    .replace("%time_seconds%", String.valueOf(pvpPlayer.getCooldownSecondsLeft()));
+                    ;
+
+            if (! sss.isBlank()) ctx.sendMessage(sss);
         }
         return true;
     }

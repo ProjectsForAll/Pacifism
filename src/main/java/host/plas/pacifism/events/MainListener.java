@@ -6,6 +6,7 @@ import host.plas.pacifism.players.PacifismPlayer;
 import host.plas.pacifism.players.PacifismWhitelist;
 import host.plas.pacifism.utils.WorldUtils;
 import org.bukkit.block.Block;
+import org.bukkit.entity.EnderPearl;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
@@ -44,6 +45,8 @@ public class MainListener implements Listener {
 
         if (! (damager instanceof Projectile)) return;
         if (! (damaged instanceof Player)) return;
+
+        if (damager instanceof EnderPearl) return;
 
         Projectile damagerProjectile = (Projectile) damager;
         Player damagedPlayer = (Player) damaged;

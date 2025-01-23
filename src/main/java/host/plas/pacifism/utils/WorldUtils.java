@@ -27,16 +27,34 @@ public class WorldUtils {
         if (! damagerPVPPlayer.isPvpEnabled()) {
             event.setCancelled(true);
 
-            Sender damagerSender = new Sender(damagerPlayer);
-            damagerSender.sendMessage("&cYou have PVP disabled! You cannot hurt other players.");
+            String pds = Pacifism.getMessageConfig().getPvpDisabledSelf()
+                    .replace("%damager_name%", damagerPlayer.getName())
+                    .replace("%damager_display_name%", damagerPlayer.getDisplayName())
+                    .replace("%damaged_name%", damagedPlayer.getName())
+                    .replace("%damaged_display_name%", damagedPlayer.getDisplayName())
+                    ;
+
+            if (! pds.isBlank()) {
+                Sender damagerSender = new Sender(damagerPlayer);
+                damagerSender.sendMessage(pds);
+            }
             return true;
         }
 
         if (! damagedPVPPlayer.isPvpEnabled()) {
             event.setCancelled(true);
 
-            Sender damagerSender = new Sender(damagerPlayer);
-            damagerSender.sendMessage("&cThat player has PVP disabled! You cannot hurt them.");
+            String pdo = Pacifism.getMessageConfig().getPvpDisabledOther()
+                    .replace("%damager_name%", damagerPlayer.getName())
+                    .replace("%damager_display_name%", damagerPlayer.getDisplayName())
+                    .replace("%damaged_name%", damagedPlayer.getName())
+                    .replace("%damaged_display_name%", damagedPlayer.getDisplayName())
+                    ;
+
+            if (! pdo.isBlank()) {
+                Sender damagerSender = new Sender(damagerPlayer);
+                damagerSender.sendMessage(pdo);
+            }
             return true;
         }
 

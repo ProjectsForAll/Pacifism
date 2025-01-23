@@ -6,6 +6,7 @@ import host.plas.pacifism.commands.SetGraceTimeCMD;
 import host.plas.pacifism.commands.ToggleCMD;
 import host.plas.pacifism.commands.WorldWhitelistCMD;
 import host.plas.pacifism.config.MainConfig;
+import host.plas.pacifism.config.MessageConfig;
 import host.plas.pacifism.config.WorldConfig;
 import host.plas.pacifism.database.PacifismDBOperator;
 import host.plas.pacifism.events.MainListener;
@@ -24,6 +25,8 @@ public final class Pacifism extends BetterPlugin {
 
     @Getter @Setter
     private static MainConfig mainConfig;
+    @Getter @Setter
+    private static MessageConfig messageConfig;
     @Getter @Setter
     private static WorldConfig worldConfig;
 
@@ -55,6 +58,7 @@ public final class Pacifism extends BetterPlugin {
         instance = this;
 
         mainConfig = new MainConfig();
+        messageConfig = new MessageConfig();
         worldConfig = new WorldConfig();
 
         dbOperator = new PacifismDBOperator(mainConfig.getConnectorSet());

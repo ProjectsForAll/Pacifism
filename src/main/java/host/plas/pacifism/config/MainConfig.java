@@ -42,10 +42,30 @@ public class MainConfig extends SimpleConfiguration {
         getMaterialWhitelist();
         getEntityWhitelist();
 
+        getPlaceheldGracetimeLeftNegativesReplace();
+        getPlaceheldGracetimeLeftNegativesReplaceTo();
+
         getPlaceheldGracetimeLeftTicksSimple();
         getPlaceheldGracetimeLeftTicksFancy();
         getPlaceheldGracetimeLeftSecondsSimple();
         getPlaceheldGracetimeLeftSecondsFancy();
+        getPlaceheldGracetimeLeftMinutesSimple();
+        getPlaceheldGracetimeLeftMinutesFancy();
+        getPlaceheldGracetimeLeftHoursSimple();
+        getPlaceheldGracetimeLeftHoursFancy();
+        getPlaceheldGracetimeLeftDaysSimple();
+        getPlaceheldGracetimeLeftDaysFancy();
+        getPlaceheldGracetimeLeftWeeksSimple();
+        getPlaceheldGracetimeLeftWeeksFancy();
+
+        getPlaceheldGracetimeLeftCombinedFancy();
+        getPlaceheldGracetimeLeftCombinedSectionOnlyNonZero();
+        getPlaceheldGracetimeLeftCombinedSectionWeeks();
+        getPlaceheldGracetimeLeftCombinedSectionDays();
+        getPlaceheldGracetimeLeftCombinedSectionHours();
+        getPlaceheldGracetimeLeftCombinedSectionMinutes();
+        getPlaceheldGracetimeLeftCombinedSectionSeconds();
+        getPlaceheldGracetimeLeftCombinedSectionTicks();
 
         getPlaceheldStatusPvpOffSimple();
         getPlaceheldStatusPvpOffFancy();
@@ -185,6 +205,18 @@ public class MainConfig extends SimpleConfiguration {
         return ConfigUtils.getPWhitelist(this, "explosions.entities", "explosions.entities.", "list", "is-blacklist");
     }
 
+    public boolean getPlaceheldGracetimeLeftNegativesReplace() {
+        reloadResource();
+
+        return getOrSetDefault("placeholders.gracetime.left.negatives.replace", true);
+    }
+
+    public long getPlaceheldGracetimeLeftNegativesReplaceTo() {
+        reloadResource();
+
+        return getOrSetDefault("placeholders.gracetime.left.negatives.replace-to", 0L);
+    }
+
     public String getPlaceheldGracetimeLeftTicksSimple() {
         reloadResource();
 
@@ -207,6 +239,102 @@ public class MainConfig extends SimpleConfiguration {
         reloadResource();
 
         return getOrSetDefault("placeholders.gracetime.left.seconds.fancy", "&a%gracetime_left_seconds% &fseconds");
+    }
+
+    public String getPlaceheldGracetimeLeftMinutesSimple() {
+        reloadResource();
+
+        return getOrSetDefault("placeholders.gracetime.left.minutes.simple", "%gracetime_left_minutes%");
+    }
+
+    public String getPlaceheldGracetimeLeftMinutesFancy() {
+        reloadResource();
+
+        return getOrSetDefault("placeholders.gracetime.left.minutes.fancy", "&a%gracetime_left_minutes% &fminutes");
+    }
+
+    public String getPlaceheldGracetimeLeftHoursSimple() {
+        reloadResource();
+
+        return getOrSetDefault("placeholders.gracetime.left.hours.simple", "%gracetime_left_hours%");
+    }
+
+    public String getPlaceheldGracetimeLeftHoursFancy() {
+        reloadResource();
+
+        return getOrSetDefault("placeholders.gracetime.left.hours.fancy", "&a%gracetime_left_hours% &fhours");
+    }
+
+    public String getPlaceheldGracetimeLeftDaysSimple() {
+        reloadResource();
+
+        return getOrSetDefault("placeholders.gracetime.left.days.simple", "%gracetime_left_days%");
+    }
+
+    public String getPlaceheldGracetimeLeftDaysFancy() {
+        reloadResource();
+
+        return getOrSetDefault("placeholders.gracetime.left.days.fancy", "&a%gracetime_left_days% &fdays");
+    }
+
+    public String getPlaceheldGracetimeLeftWeeksSimple() {
+        reloadResource();
+
+        return getOrSetDefault("placeholders.gracetime.left.weeks.simple", "%gracetime_left_weeks%");
+    }
+
+    public String getPlaceheldGracetimeLeftWeeksFancy() {
+        reloadResource();
+
+        return getOrSetDefault("placeholders.gracetime.left.weeks.fancy", "&a%gracetime_left_weeks% &fweeks");
+    }
+
+    public String getPlaceheldGracetimeLeftCombinedFancy() {
+        reloadResource();
+
+        return getOrSetDefault("placeholders.gracetime.left.combined.fancy", "%weeks% %days% %hours% %minutes% %seconds% %ticks%");
+    }
+
+    public boolean getPlaceheldGracetimeLeftCombinedSectionOnlyNonZero() {
+        reloadResource();
+
+        return getOrSetDefault("placeholders.gracetime.left.combined.sections.only-show-if-not-zero", true);
+    }
+
+    public String getPlaceheldGracetimeLeftCombinedSectionWeeks() {
+        reloadResource();
+
+        return getOrSetDefault("placeholders.gracetime.left.combined.sections.weeks", "&a%amount% &fweeks");
+    }
+
+    public String getPlaceheldGracetimeLeftCombinedSectionDays() {
+        reloadResource();
+
+        return getOrSetDefault("placeholders.gracetime.left.combined.sections.days", "&a%amount% &fdays");
+    }
+
+    public String getPlaceheldGracetimeLeftCombinedSectionHours() {
+        reloadResource();
+
+        return getOrSetDefault("placeholders.gracetime.left.combined.sections.hours", "&a%amount% &fhours");
+    }
+
+    public String getPlaceheldGracetimeLeftCombinedSectionMinutes() {
+        reloadResource();
+
+        return getOrSetDefault("placeholders.gracetime.left.combined.sections.minutes", "&a%amount% &fminutes");
+    }
+
+    public String getPlaceheldGracetimeLeftCombinedSectionSeconds() {
+        reloadResource();
+
+        return getOrSetDefault("placeholders.gracetime.left.combined.sections.seconds", "&a%amount% &fseconds");
+    }
+
+    public String getPlaceheldGracetimeLeftCombinedSectionTicks() {
+        reloadResource();
+
+        return getOrSetDefault("placeholders.gracetime.left.combined.sections.ticks", "&a%amount% &fticks");
     }
 
     public String getPlaceheldStatusPvpOffSimple() {

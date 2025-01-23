@@ -101,6 +101,30 @@ placeholders:
   gracetime:
     # Placeholder for the grace time left.
     left:
+      # Negative grace time.
+      negatives:
+        # If the plugin should replace the negative time.
+        # true = replace the negative time.
+        # false = do not replace the negative time.
+        replace: true
+        # What to replace the negative time with.
+        replace-to: 0
+      # The below have the following options:
+      # %gracetime_left_ticks% = The time left in ticks rounded down.
+      # %gracetime_left_ticks_full% = The time left in ticks with decimals.
+      # %gracetime_left_ticks_truncated:<places>% = The time left in ticks truncated to <places> decimal places.
+      # %gracetime_left_seconds% = The time left in seconds rounded down.
+      # %gracetime_left_seconds_full% = The time left in seconds with decimals.
+      # %gracetime_left_seconds_truncated:<places>% = The time left in seconds truncated to <places> decimal places.
+      # %gracetime_left_minutes% = The time left in minutes rounded down.
+      # %gracetime_left_minutes_full% = The time left in minutes with decimals.
+      # %gracetime_left_minutes_truncated:<places>% = The time left in minutes truncated to <places> decimal places.
+      # %gracetime_left_hours% = The time left in hours rounded down.
+      # %gracetime_left_hours_full% = The time left in hours with decimals.
+      # %gracetime_left_hours_truncated:<places>% = The time left in hours truncated to <places> decimal places.
+      # %gracetime_left_days% = The time left in days rounded down.
+      # %gracetime_left_days_full% = The time left in days with decimals.
+      # %gracetime_left_days_truncated:<places>% = The time left in days truncated to <places> decimal places.
       # The time in ticks.
       ticks:
         # The simple placeholder.
@@ -113,6 +137,49 @@ placeholders:
         simple: "%gracetime_left_seconds%"
         # The fancy placeholder.
         fancy: "&a%gracetime_left_seconds% &fseconds"
+      # The time in minutes.
+      minutes:
+        # The simple placeholder.
+        simple: "%gracetime_left_minutes%"
+        # The fancy placeholder.
+        fancy: "&a%gracetime_left_minutes% &fminutes"
+      # The time in hours.
+      hours:
+        # The simple placeholder.
+        simple: "%gracetime_left_hours%"
+        # The fancy placeholder.
+        fancy: "&a%gracetime_left_hours% &fhours"
+      # The time in days.
+      days:
+        # The simple placeholder.
+        simple: "%gracetime_left_days%"
+        # The fancy placeholder.
+        fancy: "&a%gracetime_left_days% &fdays"
+      # The time in days.
+      weeks:
+        # The simple placeholder.
+        simple: "%gracetime_left_weeks%"
+        # The fancy placeholder.
+        fancy: "&a%gracetime_left_weeks% &fweeks"
+      # The time combined placeholder.
+      combined:
+        # Uses the fancy placeholders for each time unit - listed above.
+        # NOTE: All leading and trailing spaces will be removed.
+        # Options:
+        # %days% = days section.
+        # %hours% = hours section.
+        # %minutes% = minutes section.
+        # %seconds% = seconds section.
+        # %ticks% = ticks section.
+        fancy: "%weeks% %days% %hours% %minutes% %seconds% %ticks%"
+        sections:
+          only-show-if-not-zero: true
+          weeks: "&a%amount% &fweeks"
+          days: "&a%amount% &fdays"
+          hours: "&a%amount% &fhours"
+          minutes: "&a%amount% &fminutes"
+          seconds: "&a%amount% &fseconds"
+          ticks: "&a%amount% &fticks"
   # PVP status placeholders.
   status:
     # Placeholder for when PVP is toggled off.

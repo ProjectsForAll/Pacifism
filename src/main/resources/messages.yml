@@ -1,0 +1,58 @@
+status:
+  enabled: "&aenabled"
+  disabled: "&cdisabled"
+
+toggle:
+  success:
+    self:
+      self: "&eYou have %status% &eyour PVP&8!"
+      upon:
+        enable: "&7(You will be able to take damage from other players.)"
+        disable: "&7(You will not be able to take damage from other players.)"
+    other:
+      self: "&eYou have %status% &b%player_name%&e's PVP&8!"
+      other: "&eYour PVP has been %status% &eby &b%player_name%&8!"
+      upon:
+        enable: "&7(They will be able to take damage from other players.)"
+        disable: "&7(They will not be able to take damage from other players.)"
+  cannot:
+    self:
+      self: "&cYou cannot toggle your PVP&8!"
+      time-left: "&cYou have &f%time_seconds% &cseconds left before you can toggle your PVP again&8!"
+    other:
+      self: "&cYou cannot toggle &b%player_name%&c's PVP&8!"
+      time-left: "&cThey have &f%time_seconds% &cseconds left before they can toggle their PVP again&8!"
+
+set-grace-time:
+  success:
+    self:
+      self: "&eYou have set your grace-time to &b%time_seconds% &eseconds&8!"
+    other:
+      self: "&eYou have set &b%player_name%&e's grace-time to &b%time_seconds% &eseconds&8!"
+      other: "&eYour grace-time has been set to &b%time_seconds% &eseconds&8!"
+
+set:
+  success:
+    self:
+      self: "&eYou have %status% &eyour PVP&8!"
+      upon:
+        enable: "&7(You will be able to take damage from other players.)"
+        disable: "&7(You will not be able to take damage from other players.)"
+    other:
+      self: "&eYou have %status% &b%player_name%&e's PVP&8!"
+      other: "&eYour PVP has been %status% &eby &b%player_name%&8!"
+      upon:
+        enable: "&7(They will be able to take damage from other players.)"
+        disable: "&7(They will not be able to take damage from other players.)"
+  cannot:
+    self:
+      self: "&cYou cannot toggle your PVP&8!"
+      time-left: "&cYou have &f%time_seconds% &cseconds left before you can toggle your PVP again&8!"
+    other:
+      self: "&cYou cannot toggle &b%player_name%&c's PVP&8!"
+      time-left: "&cThey have &f%time_seconds% &cseconds left before they can toggle their PVP again&8!"
+
+pvp:
+  disabled:
+    self: "&cYou have PVP disabled! You cannot hurt other players."
+    other: "&cThat player has PVP disabled! You cannot hurt them."
