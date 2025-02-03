@@ -96,8 +96,8 @@ public class PacifismPlayer implements Identifiable {
         // 950 - 1000 + 100 = 50
         // 1000 - 900 - 100 = 0
         // 1000 - 950 - 100 = -50
-        if (lastPvpUpdate == null) return 0;
         if (getCooldownToMillis() == 0) return 0;
+        if (lastPvpUpdate == null) return getCooldownToMillis();
 
         // Get millis between now and last update
         long diff = new Date().getTime() - lastPvpUpdate.getTime();
