@@ -1,5 +1,6 @@
 package host.plas.pacifism.placeholders;
 
+import com.google.re2j.Matcher;
 import host.plas.bou.compat.papi.expansion.BetterExpansion;
 import host.plas.bou.compat.papi.expansion.PlaceholderContext;
 import host.plas.pacifism.Pacifism;
@@ -11,7 +12,6 @@ import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.Nullable;
-import tv.quaint.thebase.lib.re2j.Matcher;
 import tv.quaint.utils.MatcherUtils;
 
 import java.util.List;
