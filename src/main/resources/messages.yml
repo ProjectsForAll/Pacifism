@@ -1,7 +1,15 @@
+# Placeholders used for a player's PVP status being toggled.
 status:
   enabled: "&aenabled"
   disabled: "&cdisabled"
 
+###########################################
+# Global (all) feedback message features:
+# Setting the value as blank ("") will
+# disable the feedback message completely.
+###########################################
+
+# Feedback messages for when a player's PVP is toggled.
 toggle:
   success:
     self:
@@ -23,6 +31,7 @@ toggle:
       self: "&cYou cannot toggle &b%player_name%&c's PVP&8!"
       time-left: "&cThey have &f%time_seconds% &cseconds left before they can toggle their PVP again&8!"
 
+# Feedback messages for when a player's grace-time is set.
 set-grace-time:
   success:
     self:
@@ -31,6 +40,7 @@ set-grace-time:
       self: "&eYou have set &b%player_name%&e's grace-time to &b%time_seconds% &eseconds&8!"
       other: "&eYour grace-time has been set to &b%time_seconds% &eseconds&8!"
 
+# Feedback messages for when a player's PVP is set.
 set:
   success:
     self:
@@ -52,6 +62,7 @@ set:
       self: "&cYou cannot toggle &b%player_name%&c's PVP&8!"
       time-left: "&cThey have &f%time_seconds% &cseconds left before they can toggle their PVP again&8!"
 
+# Feedback messages for when a player tries to hurt another player.
 pvp:
   disabled:
     self: "&cYou have PVP disabled! You cannot hurt other players."
